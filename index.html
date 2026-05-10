@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <!-- SEO & Metadata Optimization -->
+    <title>NM Attendance | Mithibai, NM, UPG | SVKM Attendance Portal Smart Tracker</title>
+    <meta name="description" content="The smartest attendance tracker for SVKM students (NM College, Mithibai, UPG). Sync your student portal PDF for NMIMS and SVKM attendance analytics.">
+    <meta name="keywords" content="SVKM Attendance, Mithibai Attendance, NM Attendance, UPG Attendance, NMIMS Attendance, SVKM Student Portal, SVKM PDF Tracker">
+    
+    <!-- PWA & Mobile Optimization -->
     <meta name="theme-color" content="#1D9BF0" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NM Attendify">
-    <meta name="application-name" content="NM Attendify">
     
-    <title>NM Attendify - Smart Analytics</title>
-    
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1DYR0ESM3"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -21,16 +25,18 @@
       gtag('config', 'G-C1DYR0ESM3');
     </script>
 
+    <!-- External Tools -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         /* --- THEME VARIABLES --- */
         :root {
@@ -78,6 +84,7 @@
             background-attachment: fixed;
             transition: background-color 0.4s ease, color 0.4s ease;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         #app { display: flex; flex-direction: column; min-height: 100vh; position: relative; }
@@ -92,8 +99,10 @@
 
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 12px; transition: background 0.2s; margin-left: -12px; }
         .header-left:hover { background: rgba(128, 128, 128, 0.1); }
+        .verified-logo { width: 30px; height: 30px; color: var(--primary); filter: drop-shadow(0 0 6px rgba(29, 155, 240, 0.3)); }
         .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.3px; color: var(--text-primary); }
         .logo-text p { font-size: 12px; color: var(--primary); margin: 0; font-weight: 600; letter-spacing: -0.2px; }
+        
         .header-actions { display: flex; gap: 12px; align-items: center; }
 
         .icon-btn {
@@ -250,7 +259,10 @@
         .status-danger { background: var(--badge-danger-bg); color: var(--badge-danger-text); }
 
         .progress-bar { background: var(--glass-border-light); height: 10px; border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #3B82F6, #8B5CF6); border-radius: 6px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .progress-fill { height: 100%; border-radius: 6px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bg-good { background-color: var(--success); }
+        .bg-warn { background-color: var(--warning); }
+        .bg-danger { background-color: var(--danger); }
 
         .subject-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary); align-items: center; font-weight: 500; }
 
@@ -268,6 +280,33 @@
         .toast.show { transform: translateX(0); }
         .toast-close { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px; padding: 4px; }
         .toast-close:hover { color: var(--text-primary); }
+
+        /* SHARE POPUP */
+        .share-popup {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
+        }
+        .share-popup.show { opacity: 1; pointer-events: auto; }
+        .share-popup-content {
+            padding: 2.5rem; max-width: 360px; width: 90%; text-align: center;
+            position: relative; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--bg-base); border-radius: 24px; box-shadow: var(--glass-shadow-hover);
+        }
+        .share-popup.show .share-popup-content { transform: translateY(0); }
+        .close-popup {
+            position: absolute; top: 16px; right: 16px; background: transparent;
+            border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px;
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .close-popup:hover { background: rgba(128,128,128,0.1); color: var(--text-primary); }
+        .whatsapp-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: #25D366; color: white; padding: 14px 20px; border-radius: 12px;
+            text-decoration: none; font-weight: 700; transition: transform 0.2s; font-size: 15px; margin-top: 20px;
+        }
+        .whatsapp-btn:hover { transform: translateY(-2px); }
 
         /* EXPORT MODE LOGIC */
         .hide-on-export { display: none !important; }
@@ -287,7 +326,7 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.5rem; }
             .session-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
             .controls-grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 2rem; }
-            .subjects-grid { grid-template-columns: 1fr; gap: 16px; } /* Perfect single column on mobile */
+            .subjects-grid { grid-template-columns: 1fr; gap: 16px; } 
             .stat-value { font-size: 32px; }
             .toast-container { top: 80px; right: 16px; left: 16px; }
             .chart-container { padding: 1.5rem 1rem; }
@@ -301,8 +340,24 @@
     <div id="app">
         <div id="toastContainer" class="toast-container"></div>
 
+        <!-- SHARE POPUP -->
+        <div id="sharePopup" class="share-popup">
+            <div class="share-popup-content">
+                <button class="close-popup" onclick="closeSharePopup()">✕</button>
+                <div style="font-size: 40px; margin-bottom: 12px;">👋</div>
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Welcome to NM Attendify!</h3>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">This tool works best when shared with friends. If you like it, share it on WhatsApp!</p>
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="closeSharePopup()">
+                    <span>💬</span> Share on WhatsApp
+                </a>
+            </div>
+        </div>
+
         <header>
             <div class="header-left" onclick="resetToUpload()" title="Go Home">
+                <svg class="verified-logo" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.11-.27.18-.56.18-.85 0-1.38-1.12-2.5-2.5-2.5-.29 0-.58.07-.85.18C16.45 4.38 15.08 3.5 13.5 3.5c-1.58 0-2.95.88-3.65 2.18-.27-.11-.56-.18-.85-.18-1.38 0-2.5 1.12-2.5 2.5 0 .29.07.58.18.85C5.38 9.55 4.5 10.92 4.5 12.5c0 1.58.88 2.95 2.18 3.65-.11.27-.18.56-.18.85 0 1.38 1.12 2.5 2.5 2.5.29 0 .58-.07.85-.18 1.45 1.3 2.82 2.18 4.4 2.18 1.58 0 2.95-.88 3.65-2.18.27.11.56.18.85.18 1.38 0 2.5-1.12 2.5-2.5 0-.29-.07-.58-.18-.85 1.3-.7 2.18-2.07 2.18-3.65zm-12.21 4L7.45 13.6l1.42-1.42 1.42 1.42 3.82-3.82 1.42 1.42-5.24 5.3z"/>
+                </svg>
                 <div class="logo-text">
                     <h1>NM Attendify</h1>
                     <p>Smart Analytics</p>
@@ -397,8 +452,8 @@
 
                 <div class="session-info glass-panel hover-card stagger-2" id="sessionSection">
                     <div class="session-grid">
-                        <div class="session-item"><span>Student</span> <span id="studentName">-</span></div>
-                        <div class="session-item"><span>Program</span> <span id="program">-</span></div>
+                        <div class="session-item"><span>Student Name</span> <span id="studentName">-</span></div>
+                        <div class="session-item"><span>Programme</span> <span id="program">-</span></div>
                         <div class="session-item"><span>Academic Year</span> <span id="academicYear">-</span></div>
                         <div class="session-item"><span>Semester</span> <span id="semester">-</span></div>
                         <div class="session-item"><span>Period</span> <span id="period">-</span></div>
@@ -499,9 +554,8 @@
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 5000);
         }
 
-        // --- PDF PARSING LOGIC ---
+        // --- FORMATTING HELPERS ---
         function parseDateString(dateStr) {
-            // Converts "03.11.2025" to "03 Nov"
             let parts = dateStr.trim().split('.');
             if(parts.length === 3) {
                 const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -509,6 +563,17 @@
                 if(mIndex >= 0 && mIndex < 12) return `${parts[0]} ${months[mIndex]}`;
             }
             return dateStr;
+        }
+
+        // Properly Title Cases things like "BACHELOR OF MANAGEMENT STUDIES" to "Bachelor of Management Studies"
+        function toTitleCase(str) {
+            if (!str) return '';
+            return str.toLowerCase().split(' ').map(word => {
+                if (word.length === 0) return '';
+                const lowerCaseWords = ['of', 'and', 'in', 'for', 'with', 'the'];
+                if (lowerCaseWords.includes(word)) return word;
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            }).join(' ');
         }
 
         async function extractDataFromPDF(file) {
@@ -539,11 +604,8 @@
                         let semester = "Unknown Semester";
                         let period = "Unknown Period";
 
-                        // Intelligent field extraction
                         for (let i = 0; i < items.length; i++) {
                             const item = items[i];
-                            
-                            // 1. Program Name Fix (Skip "From..." which is the duration)
                             if (item === 'Program Name' || item === 'Program Name:') {
                                 if (items[i+1]) {
                                     if (items[i+1].startsWith('From') && items[i+2]) {
@@ -556,8 +618,6 @@
                                     }
                                 }
                             }
-                            
-                            // 2. Academic Year & Semester Splitting
                             if (item.includes('Semester')) {
                                 let parts = item.split(',');
                                 if (parts.length >= 2) {
@@ -567,8 +627,6 @@
                                     semester = item;
                                 }
                             }
-
-                            // Catch period if it wasn't caught by program logic
                             if (item.startsWith('From ') && item.includes(' to ')) {
                                 let pStr = item.replace('From', '').trim();
                                 let pParts = pStr.split('to');
@@ -577,7 +635,6 @@
                             }
                         }
 
-                        // Student Name
                         const attRepIdx = items.indexOf('Attendance Report');
                         if (attRepIdx !== -1) {
                             for (let i = attRepIdx + 1; i < attRepIdx + 10; i++) {
@@ -701,6 +758,12 @@
             if (percentage >= 65) return 'status-warning';
             return 'status-danger';
         }
+        
+        function getProgressBarClass(percentage) {
+            if (percentage >= 75) return 'bg-good';
+            if (percentage >= 65) return 'bg-warn';
+            return 'bg-danger';
+        }
 
         window.updateLeaves = function(subjectIndex, change) {
             if (!currentData) return;
@@ -721,7 +784,6 @@
             const stats = calculateStats();
             const target = parseInt(document.getElementById('targetInput').value);
 
-            // Animate number updates (simple immediate set for reliability)
             document.getElementById('overallPct').textContent = stats.overall + '%';
             document.getElementById('overallMeta').textContent = `${stats.totalAttended}/${stats.totalClasses} classes`;
             document.getElementById('attendedCount').textContent = stats.totalAttended;
@@ -746,9 +808,9 @@
             document.getElementById('forecastAttend').textContent = attendAll + '%';
             document.getElementById('forecastMiss').textContent = missAll + '%';
 
-            // Update Session Info
-            document.getElementById('studentName').textContent = currentData.studentName;
-            document.getElementById('program').textContent = currentData.program;
+            // Update Session Info (With Title Casing applied here)
+            document.getElementById('studentName').textContent = toTitleCase(currentData.studentName);
+            document.getElementById('program').textContent = toTitleCase(currentData.program);
             document.getElementById('academicYear').textContent = currentData.academicYear;
             document.getElementById('semester').textContent = currentData.semester;
             document.getElementById('period').textContent = currentData.period;
@@ -759,6 +821,7 @@
                 let effectiveAttended = Math.min(s.total, s.attended + (s.officialLeaves || 0));
                 const pct = s.total > 0 ? Math.round((effectiveAttended / s.total) * 100) : 0;
                 const status = getStatusClass(pct);
+                const barColor = getProgressBarClass(pct);
                 
                 return `
                     <div class="subject-card glass-panel hover-card">
@@ -767,7 +830,7 @@
                             <span class="status-badge ${status}">${pct}%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${pct}%;"></div>
+                            <div class="progress-fill ${barColor}" style="width: ${pct}%;"></div>
                         </div>
                         <div class="subject-meta">
                             <span>${effectiveAttended}/${s.total} Attended</span>
@@ -826,7 +889,7 @@
                     animation: { duration: 1000, easing: 'easeOutQuart' },
                     plugins: { 
                         legend: { display: false },
-                        alwaysShowLabels: { display: false }, // Custom plugin off by default
+                        alwaysShowLabels: { display: false }, 
                         tooltip: {
                             backgroundColor: isDark ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)',
                             titleColor: isDark ? '#F8FAFC' : '#0F172A', bodyColor: isDark ? '#F8FAFC' : '#0F172A',
@@ -884,6 +947,12 @@
             document.getElementById('fileInput').value = '';
         }
 
+        // --- SHARE POPUP LOGIC ---
+        function closeSharePopup() {
+            document.getElementById('sharePopup').classList.remove('show');
+            localStorage.setItem('nmat_popup_shown', 'true');
+        }
+
         // --- HIGH-RES EXPORT MODE ---
         document.getElementById('exportBtn').addEventListener('click', async () => {
             const btn = document.getElementById('exportBtn');
@@ -903,10 +972,9 @@
             watermark.style.display = 'block';
             document.body.classList.add('exporting');
 
-            // Force Data labels on chart
             if(attendanceChartInstance) {
                 attendanceChartInstance.options.plugins.alwaysShowLabels.display = true;
-                attendanceChartInstance.update('none'); // Update without animation
+                attendanceChartInstance.update('none'); 
             }
 
             const originalMaxWidth = dashboard.style.maxWidth;
@@ -916,10 +984,10 @@
             dashboard.style.borderRadius = '24px';
 
             try {
-                await new Promise(resolve => setTimeout(resolve, 300)); // Ensure layout settles
+                await new Promise(resolve => setTimeout(resolve, 300));
 
                 const canvas = await html2canvas(dashboard, {
-                    scale: 3, // 3x is the sweet spot for crispness vs memory limits on mobile
+                    scale: 3,
                     backgroundColor: document.body.classList.contains('dark-theme') ? '#0F172A' : '#F1F5F9', 
                     useCORS: true, logging: false, windowWidth: 600
                 });
@@ -943,7 +1011,6 @@
                 dashboard.style.maxWidth = originalMaxWidth;
                 dashboard.style.padding = ''; dashboard.style.borderRadius = '';
                 
-                // Hide Data labels again
                 if(attendanceChartInstance) {
                     attendanceChartInstance.options.plugins.alwaysShowLabels.display = false;
                     attendanceChartInstance.update('none');
@@ -988,7 +1055,15 @@
         zone.addEventListener('dragleave', () => { zone.style.borderColor = 'var(--glass-border-light)'; });
         zone.addEventListener('drop', (e) => { e.preventDefault(); zone.style.borderColor = 'var(--glass-border-light)'; if (e.dataTransfer.files.length > 0) handleFileUpload(e.dataTransfer.files[0]); });
 
-        window.onload = loadDataFromLocal;
+        window.onload = () => { 
+            loadDataFromLocal(); 
+            // Show welcome sharing popup if never shown
+            if (!localStorage.getItem('nmat_popup_shown')) {
+                setTimeout(() => {
+                    document.getElementById('sharePopup').classList.add('show');
+                }, 1500); // Small delay so the user sees the dashboard/upload screen first
+            }
+        };
     </script>
 </body>
 </html>
