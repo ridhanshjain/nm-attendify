@@ -203,6 +203,7 @@
             display: none; align-items: center; justify-content: space-between; gap: 16px;
             padding: 16px; background: var(--glass-bg); border: 2px solid var(--primary);
             border-radius: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(29, 155, 240, 0.15);
+            margin-bottom: 1.5rem;
         }
         .install-banner:hover { transform: translateY(-3px); }
         .install-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; pointer-events: none; flex-shrink: 0; }
@@ -221,17 +222,18 @@
         .val-danger { color: var(--danger); text-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
         .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
         
-        /* The requested "Data as of" line OUTSIDE the cards */
+        /* The "Data as of" line OUTSIDE the cards */
         .last-updated-out { 
             text-align: right; font-size: 13px; color: var(--text-tertiary); 
-            margin-bottom: 12px; font-weight: 600; display: none; 
+            margin-bottom: 12px; font-weight: 600; display: none; padding-right: 4px;
         }
 
-        .session-info { margin-bottom: 1.5rem; padding: 1.5rem; }
-        .session-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-start; }
-        .session-item { display: flex; flex-direction: column; gap: 4px; min-width: 140px; flex: 1; }
+        /* Bottom Session Info (1 Line) */
+        .session-info { margin-top: 2.5rem; padding: 1.5rem; margin-bottom: 2rem;}
+        .session-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: flex-start; }
+        .session-item { display: flex; flex-direction: column; gap: 4px; }
         .session-item span:first-child { color: var(--text-tertiary); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; }
-        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 15px; word-break: break-word; line-height: 1.4; }
+        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 14px; word-break: break-word; line-height: 1.4; }
 
         .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
         .control-card { padding: 1.5rem; }
@@ -257,6 +259,9 @@
         }
         input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
         body.dark-theme input[type="range"]::-webkit-slider-thumb { border-color: var(--bg-base); }
+
+        .requirement-box { padding: 14px; background: var(--leaves-ctrl-bg); border-radius: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; border: 1px solid var(--glass-border); }
+        .requirement-box strong { color: var(--text-primary); font-weight: 800; font-size: 14px; }
 
         .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.25rem; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; font-weight: 600; }
         .forecast-group input { padding: 4px 8px; width: 56px; font-size: 15px; border-radius: 8px; border: 1px solid var(--glass-border-light); background: var(--leaves-ctrl-bg); color: var(--text-primary); }
@@ -369,9 +374,8 @@
             .stat-meta { font-size: 11px; }
             .last-updated-out { text-align: center; margin-bottom: 16px; }
 
-            .session-info { padding: 1.25rem; margin-bottom: 1.25rem; }
-            .session-grid { flex-direction: column; gap: 14px; } 
-            .session-item { min-width: 100%; }
+            .session-info { padding: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; }
+            .session-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } 
 
             .controls-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 1.25rem; }
             .control-card { padding: 1.25rem; }
@@ -391,6 +395,9 @@
             
             .toast-container { top: 70px; right: 12px; left: 12px; }
             .share-popup-content { padding: 2rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .session-grid { grid-template-columns: 1fr; gap: 12px; } /* Single column for very small screens */
         }
     </style>
 </head>
@@ -469,14 +476,14 @@
                 <div id="uploadContent" class="stagger-1">
                     
                     <!-- PWA APP INSTALL BANNER -->
-                    <div id="installAppCard" class="install-banner glass-panel">
+                    <div id="installAppCard" class="install-banner glass-panel" style="display: flex;">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <svg class="verified-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 36px; height: 36px;">
                                 <path d="M12 1.25L14.75 3.19l3.19-.53l1.19 3.03l3.03 1.19l-.53 3.19L23.75 12l-1.94 2.75l.53 3.19l-3.03 1.19l-1.19 3.03l-3.19-.53L12 22.75L9.25 20.81l-3.19.53l-1.19-3.03l-3.03-1.19l.53-3.19L1.25 12l1.94-2.75l-.53-3.19l3.03-1.19l1.19-3.03l3.19.53L12 1.25Z" fill="#1D9BF0"/>
                                 <path d="M10.5 16.5c-.2 0-.39-.08-.53-.22l-3-3c-.29-.29-.29-.77 0-1.06c.29-.29.77-.29 1.06 0l2.47 2.47l6.47-6.47c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06l-7 7c-.14.14-.33.22-.53.22Z" fill="#FFFFFF"/>
                             </svg>
                             <div style="text-align: left;">
-                                <div style="font-weight: 800; font-size: 15px;">Install NM Attendify</div>
+                                <div style="font-weight: 800; font-size: 15px;">NM Attendify</div>
                                 <div style="font-size: 12px; color: var(--text-secondary);">Add to Home Screen for quick access</div>
                             </div>
                         </div>
@@ -560,16 +567,6 @@
                     </div>
                 </div>
 
-                <div class="session-info glass-panel hover-card stagger-2" id="sessionSection">
-                    <div class="session-grid">
-                        <div class="session-item"><span>Student Name</span> <span id="studentName">-</span></div>
-                        <div class="session-item"><span>Programme</span> <span id="program">-</span></div>
-                        <div class="session-item"><span>Academic Year</span> <span id="academicYear">-</span></div>
-                        <div class="session-item"><span>Semester</span> <span id="semester">-</span></div>
-                        <div class="session-item"><span>Period</span> <span id="period">-</span></div>
-                    </div>
-                </div>
-
                 <div class="controls-grid stagger-3" id="controlsSection">
                     <div class="control-card glass-panel hover-card">
                         <div class="control-header"><span>🎯</span><span>Target Attendance</span></div>
@@ -615,6 +612,16 @@
                     </div>
                     <div class="subjects-grid" id="subjectsGrid"></div>
                 </div>
+
+                <!-- Session Info moved to the bottom perfectly in 1 line -->
+                <div class="session-info glass-panel hover-card stagger-4" id="sessionSection">
+                    <div class="session-grid">
+                        <div class="session-item"><span>Student Name</span> <span id="studentName">-</span></div>
+                        <div class="session-item"><span>Academic Year</span> <span id="academicYear">-</span></div>
+                        <div class="session-item"><span>Semester</span> <span id="semester">-</span></div>
+                        <div class="session-item"><span>Period</span> <span id="period">-</span></div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -636,6 +643,11 @@
         });
 
         document.getElementById('installAppCard').addEventListener('click', async () => {
+            if (isIos()) {
+                // If iOS, show the hint since custom prompts aren't allowed
+                document.getElementById('iosInstallHint').style.display = 'block';
+                return;
+            }
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
@@ -703,46 +715,23 @@
                         const items = fullTextItems.filter(str => str !== '');
                         const fullTextStr = items.join(' ');
 
-                        if (!fullTextStr.includes('Attendance') || (!fullTextStr.includes('Program Name') && !fullTextStr.includes('Course Name'))) {
+                        if (!fullTextStr.includes('Attendance') || (!fullTextStr.includes('Course Name'))) {
                             throw new Error("Invalid PDF Format. Please upload an authentic SVKM Attendance Report.");
                         }
 
                         let studentName = "Unknown Student";
-                        let program = "Unknown Program";
                         let academicYear = "Unknown Year";
                         let semester = "Unknown Semester";
                         let period = "Unknown Period";
                         let reportDate = "";
 
-                        // Robust Extraction Loop
-                        let progFound = false;
                         for (let i = 0; i < items.length; i++) {
                             const item = items[i].trim();
-                            const itemUpper = item.toUpperCase().replace(/\s+/g, '');
+                            const itemUpper = item.toUpperCase();
                             
                             // Capture exact Date from PDF explicitly
                             if (!reportDate && /\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/.test(item) && !item.includes('to') && i < 40) {
                                 reportDate = item.match(/\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/)[1].replace(/\./g, '/');
-                            }
-                            
-                            // Highly Robust Program Name Extraction
-                            if (!progFound && (itemUpper === 'PROGRAMNAME' || itemUpper === 'PROGRAMNAME:' || itemUpper === 'PROGRAMMENAME' || itemUpper === 'PROGRAMME' || itemUpper === 'PROGRAMME:')) {
-                                if (items[i].includes(':') && items[i].split(':')[1].trim().length > 3) {
-                                    program = items[i].split(':')[1].trim();
-                                    progFound = true;
-                                } else {
-                                    for(let j=1; j<=5; j++) {
-                                        if(!items[i+j]) break;
-                                        const nextItem = items[i+j].trim();
-                                        const nUp = nextItem.toUpperCase();
-                                        // Ignore page numbers, dashed lines, short strings
-                                        if (nextItem.length > 3 && !/^[\W_0-9]+$/.test(nextItem) && !nUp.includes('DURATION') && !nUp.includes('REPORT') && !nUp.includes('ATTENDANCE') && !nUp.includes('SEMESTER')) {
-                                            program = nextItem;
-                                            progFound = true;
-                                            break;
-                                        }
-                                    }
-                                }
                             }
 
                             // Semester
@@ -775,9 +764,6 @@
                                 }
                             }
                         }
-                        
-                        // Clean program name (Removes weird characters like ---0---)
-                        program = program.replace(/[\-\_0-9]+$/, '').replace(/---/g, '').trim();
 
                         // Student Name
                         const attRepIdx = items.indexOf('Attendance Report');
@@ -869,7 +855,7 @@
                         }
 
                         resolve({
-                            studentName, program, academicYear, semester, period, 
+                            studentName, academicYear, semester, period, 
                             history: historyPoints, historyLabels, subjects,
                             absentLogs: absentLogs,
                             lastUpdated: reportDate
@@ -1003,7 +989,6 @@
             document.getElementById('forecastMiss').textContent = missAll + '%';
 
             document.getElementById('studentName').textContent = toTitleCase(currentData.studentName);
-            document.getElementById('program').textContent = toTitleCase(currentData.program);
             document.getElementById('academicYear').textContent = currentData.academicYear;
             document.getElementById('semester').textContent = currentData.semester;
             document.getElementById('period').textContent = currentData.period;
@@ -1216,10 +1201,10 @@
             
             const studentName = currentData.studentName ? toTitleCase(currentData.studentName) : "Student";
             const semester = currentData.semester || "";
-            const period = currentData.period || "";
+            const period = currentData.period ? currentData.period.replace(/from/i, '').trim() : "";
 
-            // New structured WhatsApp message
-            const textToShare = `${studentName} - ${semester}\nAttendance from ${period}\n\n📈 Overall: ${stats.overall}%\n✅ Attended: ${stats.totalAttended} / ${stats.totalClasses} classes\n\n${targetActionText}\n\nCheck your attendance securely at:\nhttps://nm-attendify.vercel.app`;
+            // New structured WhatsApp message strictly formatted as requested
+            const textToShare = `*${studentName}* - ${semester}\nAttendance from ${period}\n\n📈 *Overall:* ${stats.overall}%\n✅ *Attended:* ${stats.totalAttended} / ${stats.totalClasses} classes\n\n*${targetActionText}*\n\nCheck your attendance securely at:\nhttps://nm-attendify.vercel.app`;
             
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
             window.open(whatsappUrl, '_blank');
