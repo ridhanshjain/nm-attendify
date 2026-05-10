@@ -114,7 +114,7 @@
         .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.5px; color: var(--text-primary); line-height: 1.1; }
         .logo-text p { font-size: 12px; color: var(--primary); margin: 0; font-weight: 700; letter-spacing: 0px; text-transform: uppercase; }
         
-        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .header-actions { display: flex; gap: 8px; align-items: center; }
 
         .icon-btn {
             background: transparent; border: 1px solid var(--glass-border-light);
@@ -128,7 +128,7 @@
         
         #exportBtn:hover { background: #25D366; color: white; border-color: #25D366; }
 
-        .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; flex-shrink: 0; }
+        .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; flex-shrink: 0; margin-left: 4px; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
         .switch-slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
@@ -151,6 +151,9 @@
         }
         .text-btn:hover { background: rgba(239, 68, 68, 0.15); transform: translateY(-1px); }
         .text-btn:active { transform: translateY(1px); }
+
+        .btn-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.2); }
+        .btn-warning:hover { background: rgba(245, 158, 11, 0.15); }
 
         main { flex: 1; padding: 2.5rem 2rem; max-width: 1200px; width: 100%; margin: 0 auto; }
 
@@ -206,7 +209,7 @@
         .val-success { color: var(--success); text-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
         
-        .last-updated { font-size: 10px; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; margin-top: 8px; letter-spacing: 0.5px; }
+        .last-updated-out { text-align: right; font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; font-weight: 600; }
 
         .session-info { margin-bottom: 1.5rem; padding: 1.5rem; }
         .session-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-start; }
@@ -296,7 +299,7 @@
         .toast-close { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px; padding: 4px; }
         .toast-close:hover { color: var(--text-primary); }
 
-        /* SHARE POPUP */
+        /* MODALS & POPUPS */
         .share-popup {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -305,7 +308,7 @@
         }
         .share-popup.show { opacity: 1; pointer-events: auto; }
         .share-popup-content {
-            padding: 2.5rem; max-width: 340px; width: 90%; text-align: center;
+            padding: 2.5rem; max-width: 380px; width: 90%; text-align: center;
             position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: var(--bg-base); border: 1px solid var(--glass-border-light); border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
@@ -320,8 +323,16 @@
             display: flex; align-items: center; justify-content: center; gap: 8px;
             background: #25D366; color: white; padding: 14px 20px; border-radius: 14px;
             text-decoration: none; font-weight: 800; transition: transform 0.2s; font-size: 15px; margin-top: 20px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            border: none; width: 100%; cursor: pointer;
         }
         .whatsapp-btn:hover { transform: translateY(-2px); }
+
+        /* Absent Log Styles */
+        .absent-list { overflow-y: auto; text-align: left; margin-top: 1rem; padding-right: 8px; max-height: 50vh; margin-bottom: 10px; }
+        .absent-item { padding: 12px 0; border-bottom: 1px solid var(--glass-border-light); display: flex; flex-direction: column; gap: 6px; }
+        .absent-item:last-child { border-bottom: none; }
+        .absent-course { font-weight: 700; font-size: 14px; color: var(--text-primary); line-height: 1.3; }
+        .absent-date { font-size: 12px; color: var(--danger); font-weight: 700; align-self: flex-start; background: rgba(239, 68, 68, 0.1); padding: 4px 8px; border-radius: 6px; }
 
         /* STRICT MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
@@ -333,6 +344,7 @@
             
             .header-actions { gap: 8px; }
             .icon-btn { width: 34px; height: 34px; font-size: 14px; }
+            .text-btn { padding: 8px 12px; font-size: 12px; }
             .theme-switch { width: 46px; height: 26px; }
             .switch-slider:before { height: 18px; width: 18px; bottom: 3px; }
             input:checked + .switch-slider:before { transform: translateX(20px); }
@@ -375,16 +387,34 @@
         <!-- SHARE POPUP -->
         <div id="sharePopup" class="share-popup">
             <div class="share-popup-content">
-                <button class="close-popup" onclick="closeSharePopup()">✕</button>
+                <button class="close-popup" onclick="document.getElementById('sharePopup').classList.remove('show'); localStorage.setItem('nmat_popup_shown', 'true');">✕</button>
                 <div style="font-size: 44px; margin-bottom: 12px;">👋</div>
                 <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;">Welcome to NM Attendify!</h3>
                 <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;">This tool works best when shared with friends.</p>
                 <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">If it helped you, share it on WhatsApp!</p>
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20https://nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="closeSharePopup()">
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20https://nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="document.getElementById('sharePopup').classList.remove('show'); localStorage.setItem('nmat_popup_shown', 'true');">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg> Share on WhatsApp
                 </a>
+            </div>
+        </div>
+
+        <!-- ABSENT LOG POPUP -->
+        <div id="absentLogPopup" class="share-popup">
+            <div class="share-popup-content" style="display: flex; flex-direction: column;">
+                <button class="close-popup" onclick="document.getElementById('absentLogPopup').classList.remove('show')">✕</button>
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; text-align: left;">Absent Log</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); text-align: left; margin-bottom: 8px;">History of missed lectures from your PDF.</p>
+                <div id="absentLogList" class="absent-list">
+                    <!-- Javascript injects absent items here -->
+                </div>
+                <!-- Absent Log Share Button -->
+                <button id="shareAbsentLogBtn" class="whatsapp-btn" style="margin-top: 10px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg> Share List
+                </button>
             </div>
         </div>
 
@@ -401,16 +431,14 @@
             </div>
             
             <div class="header-actions">
+                <button id="absentLogBtn" class="text-btn btn-warning" style="display: none;">Absent Log</button>
                 <button id="clearDataBtn" class="text-btn">Clear</button>
+                
                 <button id="exportBtn" class="icon-btn" title="Share via WhatsApp" style="display: none;">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
                 </button>
-                
-                <a href="mailto:nmattendify@gmail.com?subject=NM%20Attendify%20Feedback&body=Hi%20Team%2C%0A%0AHere%20is%20my%20feedback%3A%0A" class="icon-btn" title="Contact Support">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                </a>
                 
                 <label class="theme-switch" title="Toggle Theme">
                     <input type="checkbox" id="themeToggleCheckbox">
@@ -440,6 +468,11 @@
                             <div class="upload-text-main">Click to upload or drag & drop</div>
                             <div class="upload-text-sub">Supports SVKM Attendance PDFs only</div>
                         </div>
+                        
+                        <!-- Privacy Guarantee -->
+                        <p style="text-align: center; font-size: 13px; color: var(--text-tertiary); font-weight: 600; line-height: 1.4; padding: 0 10px;">
+                            🔒 100% Private. Your PDF is processed locally on your device and is never uploaded to any server.
+                        </p>
                     </div>
                     
                     <input type="file" id="fileInput" accept=".pdf">
@@ -464,12 +497,14 @@
 
             <div class="dashboard-view" id="dashboardView">
                 
+                <!-- Display Data As Of clearly outside the main metric card grids for cleaner visual -->
+                <div id="lastUpdatedStr" class="last-updated-out"></div>
+                
                 <div class="stats-grid stagger-1">
                     <div class="stat-card glass-panel hover-card">
                         <div class="stat-label">Overall Attendance</div>
                         <div class="stat-value val-primary" id="overallPct">--%</div>
                         <div class="stat-meta" id="overallMeta">0/0 classes</div>
-                        <div class="last-updated" id="lastUpdatedStr"></div>
                     </div>
                     
                     <div class="stat-card glass-panel hover-card">
@@ -510,8 +545,7 @@
                         </div>
                         <input type="range" id="targetSlider" value="75" min="0" max="100">
                         <div class="requirement-box">
-                            <div style="margin-bottom: 4px;">To maintain <strong id="targetDisplay">75%</strong>:</div>
-                            <div id="targetRequirement">• Need to attend more classes</div>
+                            <div id="targetRequirement" style="font-weight: 600;"></div>
                         </div>
                     </div>
 
@@ -591,11 +625,6 @@
             }).join(' ');
         }
 
-        function getCurrentFormattedTime() {
-            const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
-            return new Date().toLocaleString('en-US', options).replace(',', '');
-        }
-
         // --- ROBUST PDF EXTRACTION ---
         async function extractDataFromPDF(file) {
             return new Promise((resolve, reject) => {
@@ -624,12 +653,14 @@
                         let academicYear = "Unknown Year";
                         let semester = "Unknown Semester";
                         let period = "Unknown Period";
+                        let reportDate = "";
 
+                        // Enhanced Blacklist for Programme Extraction
                         const isBlacklisted = (str) => {
-                            const s = str.toUpperCase();
-                            if (s.includes('DURATION') || s.includes('REPORT') || s.includes('ACADEMIC') || s.includes('SEMESTER')) return true;
-                            if (s === 'SR' || s === 'SR.' || s === 'NO' || s === 'NO.' || s === 'SR. NO.' || s === 'SR.NO.') return true;
-                            if (s === ':' || s === 'STUDENT' || s === 'COURSE' || s === 'NAME') return true;
+                            const s = str.toUpperCase().replace(/\s+/g, '');
+                            if (s.includes('DURATION') || s.includes('REPORT') || s.includes('ACADEMIC') || s.includes('SEMESTER') || s.includes('ATTENDANCE')) return true;
+                            if (s.startsWith('SR.') || s.startsWith('SRNO') || s === 'SR') return true;
+                            if (s === ':' || s === 'STUDENT' || s === 'COURSE' || s === 'NAME' || s === 'COURSECODE' || s.includes('ROLLNO')) return true;
                             return false;
                         };
 
@@ -637,8 +668,19 @@
                             const item = items[i].trim();
                             const itemUpper = item.toUpperCase();
                             
+                            // Capture Date from PDF explicitly
+                            if (itemUpper.includes('REPORT DATE') || itemUpper.includes('RUN DATE') || itemUpper === 'DATE :' || itemUpper === 'DATE') {
+                                for(let j=1; j<=3; j++) {
+                                    if (items[i+j] && /\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/.test(items[i+j])) {
+                                        reportDate = items[i+j].match(/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/)[0];
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            // Program Name
                             if (itemUpper === 'PROGRAM NAME' || itemUpper === 'PROGRAM NAME:' || itemUpper === 'PROGRAMME NAME' || itemUpper === 'PROGRAMME' || itemUpper === 'PROGRAMME:') {
-                                for(let j=1; j<=10; j++) {
+                                for(let j=1; j<=15; j++) {
                                     if(!items[i+j]) break;
                                     const nextItem = items[i+j].trim();
                                     if(nextItem && nextItem.length > 2 && !isBlacklisted(nextItem) && !nextItem.startsWith('From') && !nextItem.includes('to')) {
@@ -652,6 +694,7 @@
                                 program = item.substring(10).trim();
                             }
 
+                            // Semester
                             if (item.includes('Semester')) {
                                 let parts = item.split(',');
                                 if (parts.length >= 2) {
@@ -662,6 +705,7 @@
                                 }
                             }
 
+                            // Period
                             if (item.startsWith('From ') && item.includes(' to ')) {
                                 let pStr = item.replace('From', '').trim();
                                 let pParts = pStr.split('to');
@@ -669,7 +713,19 @@
                                 else period = item;
                             }
                         }
+                        
+                        // Fallback logic if report date isn't cleanly found by labels
+                        if (!reportDate) {
+                            for (let i = 0; i < Math.min(items.length, 30); i++) {
+                                let match = items[i].match(/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/);
+                                if (match && !items[i].includes('to')) {
+                                    reportDate = match[0];
+                                    break;
+                                }
+                            }
+                        }
 
+                        // Student Name
                         const attRepIdx = items.indexOf('Attendance Report');
                         if (attRepIdx !== -1) {
                             for (let i = attRepIdx + 1; i < attRepIdx + 10; i++) {
@@ -724,6 +780,16 @@
                         }));
 
                         rows.sort((a, b) => a.date - b.date);
+                        
+                        // Extract specific absent logs
+                        const absentLogs = rows
+                            .filter(r => r.status === 'A')
+                            .sort((a, b) => b.date - a.date) // Most recent first
+                            .map(r => ({
+                                course: r.course,
+                                dateStr: r.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                            }));
+
                         let histAttended = 0;
                         let histTotal = 0;
                         const historyPoints = [];
@@ -751,7 +817,8 @@
                         resolve({
                             studentName, program, academicYear, semester, period, 
                             history: historyPoints, historyLabels, subjects,
-                            lastUpdated: getCurrentFormattedTime() // Add capture timestamp
+                            absentLogs: absentLogs,
+                            lastUpdated: reportDate
                         });
 
                     } catch (err) { reject(err); }
@@ -833,28 +900,32 @@
             if (!currentData) return;
             const stats = calculateStats();
             const target = parseInt(document.getElementById('targetInput').value);
+            const p = target / 100;
 
             document.getElementById('overallPct').textContent = stats.overall + '%';
             document.getElementById('overallMeta').textContent = `${stats.totalAttended}/${stats.totalClasses} classes`;
             document.getElementById('attendedCount').textContent = stats.totalAttended;
             document.getElementById('subjectCount').textContent = currentData.subjects.length;
 
-            // Render the capture timestamp
             if(currentData.lastUpdated) {
                 document.getElementById('lastUpdatedStr').textContent = `Data as of: ${currentData.lastUpdated}`;
             }
 
-            const needed = Math.ceil((target / 100) * stats.totalClasses);
-            const canMiss = Math.max(0, stats.totalAttended + (stats.totalClasses - stats.totalAttended) - needed);
-            document.getElementById('canMiss').textContent = canMiss;
-            document.getElementById('targetDisplay').textContent = target + '%';
-
-            if (stats.overall >= target) {
-                document.getElementById('targetRequirement').innerHTML = `✨ You're safely above the target!`;
+            // Real "Can Miss / Need to Reach" logic maintaining the target ratio
+            let canMiss = 0;
+            let classesNeeded = 0;
+            
+            if (stats.totalAttended >= p * stats.totalClasses) {
+                // Safely above target
+                canMiss = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
+                document.getElementById('targetRequirement').innerHTML = `Can miss <strong style="color: var(--success); font-size: 16px;">${canMiss}</strong> classes to be above ${target}%`;
             } else {
-                const stillNeed = needed - stats.totalAttended;
-                document.getElementById('targetRequirement').innerHTML = `You need <strong>${stillNeed}</strong> more classes to hit target.`;
+                // Below target
+                classesNeeded = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
+                document.getElementById('targetRequirement').innerHTML = `Need <strong style="color: var(--danger); font-size: 16px;">${classesNeeded}</strong> classes to reach ${target}%`;
             }
+            
+            document.getElementById('canMiss').textContent = canMiss;
 
             const forecastDays = parseInt(document.getElementById('forecastDays').value) || 0;
             const attendAll = Math.round(((stats.totalAttended + forecastDays) / (stats.totalClasses + forecastDays)) * 100) || 0;
@@ -969,6 +1040,11 @@
         function saveDataToLocal() { if (currentData) localStorage.setItem('nmat_data', JSON.stringify(currentData)); }
         function loadDataFromLocal() {
             const saved = localStorage.getItem('nmat_data');
+            const savedTarget = localStorage.getItem('nmat_target');
+            if (savedTarget) {
+                document.getElementById('targetInput').value = savedTarget;
+                document.getElementById('targetSlider').value = savedTarget;
+            }
             if (saved) {
                 currentData = JSON.parse(saved);
                 showDashboard();
@@ -982,6 +1058,7 @@
             document.getElementById('uploadView').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'block';
             document.getElementById('clearDataBtn').style.display = 'block';
+            document.getElementById('absentLogBtn').style.display = 'block';
             document.getElementById('exportBtn').style.display = 'flex';
             
             updateDashboard();
@@ -1001,7 +1078,7 @@
                             });
                         }
                     }, 500);
-                    confettiFired = true; // Only fire once per session
+                    confettiFired = true; 
                 }
             }
         }
@@ -1015,28 +1092,64 @@
             document.getElementById('loadingOverlay').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('clearDataBtn').style.display = 'none';
+            document.getElementById('absentLogBtn').style.display = 'none';
             document.getElementById('exportBtn').style.display = 'none';
             document.getElementById('fileInput').value = '';
         }
 
-        function closeSharePopup() {
-            document.getElementById('sharePopup').classList.remove('show');
-            localStorage.setItem('nmat_popup_shown', 'true');
-        }
+        // --- ABSENT LOG MODAL LOGIC ---
+        document.getElementById('absentLogBtn').addEventListener('click', () => {
+            const list = document.getElementById('absentLogList');
+            if (!currentData || !currentData.absentLogs || currentData.absentLogs.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-weight: 600;">You haven\'t missed any lectures! 🎉</div>';
+                document.getElementById('shareAbsentLogBtn').style.display = 'none';
+            } else {
+                list.innerHTML = currentData.absentLogs.map(log => `
+                    <div class="absent-item">
+                        <span class="absent-course">${log.course}</span>
+                        <span class="absent-date">${log.dateStr}</span>
+                    </div>
+                `).join('');
+                document.getElementById('shareAbsentLogBtn').style.display = 'flex';
+            }
+            document.getElementById('absentLogPopup').classList.add('show');
+        });
 
-        // --- DIRECT WHATSAPP TEXT SHARE ---
+        document.getElementById('shareAbsentLogBtn').addEventListener('click', () => {
+            if (!currentData || !currentData.absentLogs) return;
+            
+            let logText = currentData.absentLogs.map(log => `❌ ${log.dateStr} - ${log.course}`).join('\n');
+            let textToShare = `📚 *Absent Log* - ${toTitleCase(currentData.studentName)}\n\n${logText}\n\nCheck your analytics at:\nhttps://nm-attendify.vercel.app`;
+            
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`, '_blank');
+        });
+
+        // --- DIRECT WHATSAPP TEXT SHARE (Main Dashboard) ---
         document.getElementById('exportBtn').addEventListener('click', () => {
             if (!currentData) return;
 
-            // 4. GOOGLE ANALYTICS EVENT (WHATSAPP SHARE)
             if (typeof gtag === 'function') {
                 gtag('event', 'shared_whatsapp', { 'event_category': 'engagement' });
             }
 
             const stats = calculateStats();
-            const programName = currentData.program ? toTitleCase(currentData.program) : "SVKM";
+            const target = parseInt(document.getElementById('targetInput').value) || 75;
+            const p = target / 100;
             
-            const textToShare = `📊 *My ${programName} Attendance*\n\n📈 *Overall:* ${stats.overall}%\n✅ *Attended:* ${stats.totalAttended} / ${stats.totalClasses} classes\n\nCheck your smart analytics securely at:\nhttps://nm-attendify.vercel.app`;
+            let targetActionText = "";
+            if (stats.totalAttended >= p * stats.totalClasses) {
+                let cm = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
+                targetActionText = `can miss ${cm} classes to be above ${target}%`;
+            } else {
+                let cn = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
+                targetActionText = `need ${cn} classes to reach ${target}%`;
+            }
+            
+            const studentName = currentData.studentName ? toTitleCase(currentData.studentName) : "Student";
+            const semester = currentData.semester || "";
+            const period = currentData.period || "";
+
+            const textToShare = `${studentName} - ${semester}\nAttendance from ${period}\n\n📈 Overall: ${stats.overall}%\n✅ Attended: ${stats.totalAttended} / ${stats.totalClasses} classes\n\n${targetActionText}\n\nCheck your attendance securely at:\nhttps://nm-attendify.vercel.app`;
             
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
             window.open(whatsappUrl, '_blank');
@@ -1060,8 +1173,16 @@
         document.getElementById('uploadZone').addEventListener('click', () => document.getElementById('fileInput').click());
         document.getElementById('fileInput').addEventListener('change', (e) => { if (e.target.files.length > 0) handleFileUpload(e.target.files[0]); });
         
-        document.getElementById('targetInput').addEventListener('input', (e) => { document.getElementById('targetSlider').value = e.target.value; updateDashboard(); });
-        document.getElementById('targetSlider').addEventListener('input', (e) => { document.getElementById('targetInput').value = e.target.value; updateDashboard(); });
+        document.getElementById('targetInput').addEventListener('input', (e) => { 
+            document.getElementById('targetSlider').value = e.target.value; 
+            localStorage.setItem('nmat_target', e.target.value); 
+            updateDashboard(); 
+        });
+        document.getElementById('targetSlider').addEventListener('input', (e) => { 
+            document.getElementById('targetInput').value = e.target.value; 
+            localStorage.setItem('nmat_target', e.target.value);
+            updateDashboard(); 
+        });
         document.getElementById('forecastDays').addEventListener('input', updateDashboard);
 
         const zone = document.getElementById('uploadZone');
