@@ -27,7 +27,6 @@
 
     <!-- External Tools -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <!-- Fonts -->
@@ -101,9 +100,9 @@
         .header-left:hover { background: rgba(128, 128, 128, 0.08); }
         
         /* Authentic Verified Rosette SVG */
-        .verified-logo { width: 32px; height: 32px; flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(29, 155, 240, 0.3)); }
+        .verified-logo { width: 28px; height: 28px; flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(29, 155, 240, 0.3)); margin-top: -2px; }
         
-        .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.5px; color: var(--text-primary); }
+        .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.5px; color: var(--text-primary); line-height: 1.1; }
         .logo-text p { font-size: 12px; color: var(--primary); margin: 0; font-weight: 700; letter-spacing: 0px; text-transform: uppercase; }
         
         .header-actions { display: flex; gap: 10px; align-items: center; }
@@ -117,6 +116,9 @@
         }
         .icon-btn:hover { background: var(--glass-bg-hover); transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .icon-btn:active { transform: scale(0.95); }
+        
+        /* Specific hover for the new WhatsApp share button */
+        #exportBtn:hover { background: #25D366; color: white; border-color: #25D366; }
 
         .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; flex-shrink: 0; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
@@ -167,7 +169,6 @@
 
         .loading-overlay { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 4rem; text-align: center; gap: 16px; }
         .spinner { width: 44px; height: 44px; border: 4px solid var(--glass-border-light); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .spinner-small { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .portal-link-btn { display: block; width: 100%; background: rgba(29, 155, 240, 0.1); border: 1px solid rgba(29, 155, 240, 0.2); color: var(--primary); text-align: center; padding: 14px 20px; border-radius: 14px; text-decoration: none; font-weight: 700; transition: all 0.2s; }
@@ -182,6 +183,10 @@
         .upload-text-sub { font-size: 13px; color: var(--text-secondary); }
         #fileInput { display: none; }
 
+        .info-box { padding: 1.5rem; border-left: 4px solid var(--primary); }
+        .info-box-title { font-weight: 600; margin-bottom: 12px; display: flex; gap: 8px; }
+        .info-box ol { margin: 0; padding-left: 24px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
         /* DASHBOARD SCREEN */
         .dashboard-view { display: none; }
 
@@ -193,12 +198,11 @@
         .val-success { color: var(--success); text-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
 
-        /* Session Info layout updated to exactly match the requested horizontal wrap UI */
         .session-info { margin-bottom: 1.5rem; padding: 1.5rem; }
         .session-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-start; }
         .session-item { display: flex; flex-direction: column; gap: 4px; min-width: 140px; flex: 1; }
         .session-item span:first-child { color: var(--text-tertiary); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; }
-        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 15px; word-break: break-word; }
+        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 15px; word-break: break-word; line-height: 1.4; }
 
         .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
         .control-card { padding: 1.5rem; }
@@ -309,27 +313,13 @@
         }
         .whatsapp-btn:hover { transform: translateY(-2px); }
 
-        /* EXPORT MODE LOGIC */
-        .hide-on-export { display: none !important; }
-        .export-watermark {
-            display: none; margin-top: 1.5rem; padding: 1.5rem; text-align: center;
-            border: 2px dashed rgba(29, 155, 240, 0.3); border-radius: 20px;
-            background: rgba(29, 155, 240, 0.05);
-        }
-        body.exporting .glass-panel {
-            backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
-            background: var(--bg-base) !important; border: 1px solid var(--glass-border-light) !important;
-            box-shadow: none !important; transition: none !important;
-        }
-        body.exporting { overflow: hidden !important; background: var(--bg-base) !important; }
-
         /* STRICT MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
             main { padding: 1rem; }
             header { padding: 0.75rem 1rem; }
             .logo-text h1 { font-size: 17px; }
             .logo-text p { font-size: 10px; }
-            .verified-logo { width: 26px; height: 26px; }
+            .verified-logo { width: 24px; height: 24px; }
             
             .header-actions { gap: 8px; }
             .icon-btn { width: 34px; height: 34px; font-size: 14px; }
@@ -380,8 +370,10 @@
                 <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;">Welcome to NM Attendify!</h3>
                 <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;">This tool works best when shared with friends.</p>
                 <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">If it helped you, share it on WhatsApp!</p>
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="closeSharePopup()">
-                    <span>💬</span> Share on WhatsApp
+                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20https://nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="closeSharePopup()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg> Share on WhatsApp
                 </a>
             </div>
         </div>
@@ -401,7 +393,11 @@
             
             <div class="header-actions">
                 <button id="clearDataBtn" class="text-btn">Clear</button>
-                <button id="exportBtn" class="icon-btn" title="Share Summary to WhatsApp" style="display: none;">📸</button>
+                <button id="exportBtn" class="icon-btn" title="Share via WhatsApp" style="display: none;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg>
+                </button>
                 
                 <a href="mailto:nmattendify@gmail.com?subject=NM%20Attendify%20Feedback&body=Hi%20Team%2C%0A%0AHere%20is%20my%20feedback%3A%0A" class="icon-btn" title="Contact Support">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
@@ -485,7 +481,6 @@
                     </div>
                 </div>
 
-                <!-- Upgraded Session Info Layout (Horizontal Wrap) -->
                 <div class="session-info glass-panel hover-card stagger-2" id="sessionSection">
                     <div class="session-grid">
                         <div class="session-item"><span>Student Name</span> <span id="studentName">-</span></div>
@@ -535,11 +530,6 @@
                     <canvas id="attendanceChart"></canvas>
                 </div>
 
-                <div id="exportWatermark" class="export-watermark">
-                    <div style="font-size: 18px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; color: var(--primary);">"Living on the edge of the baseline. 📉✨"</div>
-                    <div style="font-size: 14px; color: var(--text-secondary); font-weight: 500;">Check your attendance on this site: <br><span style="color: var(--primary); font-weight: 700; font-size: 15px;">nm-attendify.vercel.app</span></div>
-                </div>
-
                 <div class="subjects-section stagger-4" id="subjectsSection">
                     <div class="section-header">
                         <div class="section-title">Subjects Breakdown</div>
@@ -553,27 +543,6 @@
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        // --- CUSTOM CHART PLUGIN FOR EXPORT DATA LABELS ---
-        const alwaysShowLabelsPlugin = {
-            id: 'alwaysShowLabels',
-            afterDatasetsDraw(chart, args, pluginOptions) {
-                if (!chart.config.options.plugins.alwaysShowLabels || !chart.config.options.plugins.alwaysShowLabels.display) return;
-                const { ctx } = chart;
-                chart.data.datasets.forEach((dataset, i) => {
-                    const meta = chart.getDatasetMeta(i);
-                    meta.data.forEach((datapoint, index) => {
-                        const value = dataset.data[index];
-                        ctx.fillStyle = document.body.classList.contains('dark-theme') ? '#F8FAFC' : '#0F172A';
-                        ctx.font = 'bold 13px "Inter", -apple-system, sans-serif';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-                        ctx.fillText(value + '%', datapoint.x, datapoint.y - 8);
-                    });
-                });
-            }
-        };
-        Chart.register(alwaysShowLabelsPlugin);
 
         // --- DATA & STATE ---
         let currentData = null;
@@ -611,7 +580,7 @@
             }).join(' ');
         }
 
-        // --- PDF EXTRACTION ---
+        // --- ROBUST PDF EXTRACTION ---
         async function extractDataFromPDF(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -640,21 +609,28 @@
                         let semester = "Unknown Semester";
                         let period = "Unknown Period";
 
+                        // Helper function to bypass fake/garbage program fields
+                        const isBlacklisted = (str) => {
+                            const s = str.toUpperCase();
+                            if (s.includes('DURATION') || s.includes('REPORT') || s.includes('ACADEMIC') || s.includes('SEMESTER')) return true;
+                            if (s === 'SR' || s === 'SR.' || s === 'NO' || s === 'NO.' || s === 'SR. NO.' || s === 'SR.NO.') return true;
+                            if (s === ':' || s === 'STUDENT' || s === 'COURSE' || s === 'NAME') return true;
+                            return false;
+                        };
+
                         // Intelligent field extraction
                         for (let i = 0; i < items.length; i++) {
                             const item = items[i].trim();
                             const itemUpper = item.toUpperCase();
                             
-                            // Highly Robust Program Name Extraction - Bypasses "Duration" or "Report"
+                            // Highly Robust Program Name Extraction
                             if (itemUpper === 'PROGRAM NAME' || itemUpper === 'PROGRAM NAME:' || itemUpper === 'PROGRAMME NAME' || itemUpper === 'PROGRAMME' || itemUpper === 'PROGRAMME:') {
-                                // Scan ahead to find the first actual string that isn't a stray label
-                                const blacklist = [':', 'DURATION', 'REPORT', 'ACADEMIC', 'SEMESTER', 'STUDENT'];
-                                for(let j=1; j<=6; j++) {
+                                for(let j=1; j<=10; j++) {
                                     if(!items[i+j]) break;
                                     const nextItem = items[i+j].trim();
-                                    const nextUpper = nextItem.toUpperCase();
-                                    // If it's a valid non-blacklisted string, and not a date line
-                                    if(nextItem && !blacklist.some(b => nextUpper.includes(b)) && !nextItem.startsWith('From') && !nextItem.includes('to')) {
+                                    
+                                    // Verify it's a legitimate string, not a date range, and bypasses the blacklist
+                                    if(nextItem && nextItem.length > 2 && !isBlacklisted(nextItem) && !nextItem.startsWith('From') && !nextItem.includes('to')) {
                                         program = nextItem;
                                         break;
                                     }
@@ -939,7 +915,6 @@
                     animation: { duration: 1000, easing: 'easeOutQuart' },
                     plugins: { 
                         legend: { display: false },
-                        alwaysShowLabels: { display: false }, 
                         tooltip: {
                             backgroundColor: isDark ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)',
                             titleColor: isDark ? '#F8FAFC' : '#0F172A', bodyColor: isDark ? '#F8FAFC' : '#0F172A',
@@ -1003,98 +978,19 @@
             localStorage.setItem('nmat_popup_shown', 'true');
         }
 
-        // --- HIGH-RES EXPORT MODE (BULLLETPROOF FIX FOR BLANK SCREEN) ---
-        document.getElementById('exportBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('exportBtn');
-            const originalIcon = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner-small"></span>';
-            btn.style.pointerEvents = 'none';
-
-            // CRITICAL FIX: Instantly snap to the top of the page before generating the canvas.
-            // Solves the blank white space issue on iOS Safari resulting from off-screen capture.
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-            const dashboard = document.getElementById('dashboardView');
-            const watermark = document.getElementById('exportWatermark');
+        // --- DIRECT WHATSAPP TEXT SHARE ---
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (!currentData) return;
+            const stats = calculateStats();
+            const programName = currentData.program ? toTitleCase(currentData.program) : "SVKM";
             
-            const hideSections = [
-                document.getElementById('controlsSection'),
-                document.getElementById('subjectsSection')
-            ];
-
-            hideSections.forEach(sec => sec.classList.add('hide-on-export'));
-            watermark.style.display = 'block';
-            document.body.classList.add('exporting');
-
-            if(attendanceChartInstance) {
-                attendanceChartInstance.options.plugins.alwaysShowLabels.display = true;
-                attendanceChartInstance.update('none'); 
-            }
-
-            // CRITICAL FIX 2: Explicitly constrain the target area and lock it to the top left
-            const originalStyle = dashboard.getAttribute('style');
-            dashboard.style.position = 'absolute';
-            dashboard.style.top = '0';
-            dashboard.style.left = '0';
-            dashboard.style.width = '600px'; // Lock to 600px mobile-friendly width
-            dashboard.style.margin = '0';
-            dashboard.style.padding = '32px';
-            dashboard.style.borderRadius = '0';
-            dashboard.style.background = document.body.classList.contains('dark-theme') ? '#0B1120' : '#F8FAFC';
-
-            try {
-                // IMPORTANT: Wait for iOS Safari layout reflow before triggering html2canvas
-                await new Promise(resolve => setTimeout(resolve, 600));
-
-                const canvas = await html2canvas(dashboard, {
-                    scale: 2, // 2x scale balances crisp text and strict mobile memory limits
-                    useCORS: true, 
-                    logging: false, 
-                    width: 600,
-                    height: dashboard.scrollHeight, // Capture exact full height
-                    windowWidth: 600,
-                    x: 0,
-                    y: 0,
-                    scrollX: 0,
-                    scrollY: 0
-                });
-                
-                canvas.toBlob(async (blob) => {
-                    if (!blob) throw new Error("Canvas is empty");
-                    const file = new File([blob], 'NM_Attendance.png', { type: 'image/png' });
-                    const shareData = { title: 'My Attendance Analytics', text: 'Check your attendance on this site: nm-attendify.vercel.app', files: [file] };
-
-                    if (navigator.canShare && navigator.canShare(shareData)) {
-                        try { await navigator.share(shareData); } 
-                        catch (err) { downloadFallback(canvas); }
-                    } else { downloadFallback(canvas); }
-                }, 'image/png', 1.0);
-
-            } catch(e) {
-                showToast("Failed to generate shareable image.");
-            } finally {
-                // Restore layout cleanly
-                hideSections.forEach(sec => sec.classList.remove('hide-on-export'));
-                watermark.style.display = 'none';
-                document.body.classList.remove('exporting');
-                dashboard.setAttribute('style', originalStyle || '');
-                
-                if(attendanceChartInstance) {
-                    attendanceChartInstance.options.plugins.alwaysShowLabels.display = false;
-                    attendanceChartInstance.update('none');
-                }
-
-                btn.innerHTML = originalIcon;
-                btn.style.pointerEvents = 'auto';
-            }
+            // Constructs a clean, native text message formatted perfectly for WhatsApp
+            const textToShare = `📊 *My ${programName} Attendance*\n\n📈 *Overall:* ${stats.overall}%\n✅ *Attended:* ${stats.totalAttended} / ${stats.totalClasses} classes\n\nCheck your smart analytics securely at:\nhttps://nm-attendify.vercel.app`;
+            
+            // Redirect straight to WhatsApp
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+            window.open(whatsappUrl, '_blank');
         });
-
-        function downloadFallback(canvas) {
-            const link = document.createElement('a');
-            link.download = `NM_Attendance_${new Date().getTime()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
 
         // --- EVENT LISTENERS ---
         document.getElementById('clearDataBtn').addEventListener('click', () => {
@@ -1125,7 +1021,6 @@
 
         window.onload = () => { 
             loadDataFromLocal(); 
-            // Show welcome sharing popup if never shown
             if (!localStorage.getItem('nmat_popup_shown')) {
                 setTimeout(() => {
                     document.getElementById('sharePopup').classList.add('show');
