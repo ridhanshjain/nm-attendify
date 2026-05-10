@@ -375,7 +375,8 @@
             .last-updated-out { text-align: center; margin-bottom: 16px; }
 
             .session-info { padding: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; }
-            .session-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } 
+            .session-grid { flex-direction: column; gap: 14px; } 
+            .session-item { min-width: 100%; }
 
             .controls-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 1.25rem; }
             .control-card { padding: 1.25rem; }
@@ -655,6 +656,8 @@
                     document.getElementById('installAppCard').style.display = 'none';
                 }
                 deferredPrompt = null;
+            } else {
+                showToast("Please ensure the app is opened via a live link to install.");
             }
         });
 
@@ -1259,7 +1262,7 @@
             
             // Show iOS PWA hint if applicable and on upload screen
             if (isIos() && !isInStandaloneMode() && !currentData) {
-                document.getElementById('iosInstallHint').style.display = 'block';
+                document.getElementById('installAppCard').style.display = 'flex';
             }
         };
     </script>
