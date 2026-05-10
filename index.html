@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://nm-attendify.vercel.app/">
     <meta property="og:title" content="NM Attendify | Smart Attendance Tracker">
     <meta property="og:description" content="Calculate exactly how many lectures you can miss. Upload your SVKM portal PDF to get smart attendance analytics instantly.">
-    <meta property="og:image" content="https://nm-attendify.vercel.app/preview.png">
+    <meta property="og:image" content="https://nm-attendify.vercel.app/og-image.jpg">
     
     <!-- PWA & Mobile Optimization -->
     <link rel="icon" type="image/png" href="favicon.png">
@@ -198,6 +198,17 @@
         .info-box-title { font-weight: 600; margin-bottom: 12px; display: flex; gap: 8px; }
         .info-box ol { margin: 0; padding-left: 24px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
 
+        /* APP INSTALL BANNER */
+        .install-banner {
+            display: none; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 16px; background: var(--glass-bg); border: 2px solid var(--primary);
+            border-radius: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(29, 155, 240, 0.15);
+        }
+        .install-banner:hover { transform: translateY(-3px); }
+        .install-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; pointer-events: none; flex-shrink: 0; }
+        
+        .ios-hint { display: none; font-size: 12px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; text-align: left; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem; }
+
         /* DASHBOARD SCREEN */
         .dashboard-view { display: none; }
 
@@ -207,9 +218,14 @@
         .stat-value { font-size: 38px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -1px; line-height: 1; }
         .val-primary { color: var(--primary); text-shadow: 0 4px 12px rgba(29, 155, 240, 0.2); }
         .val-success { color: var(--success); text-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+        .val-danger { color: var(--danger); text-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
         .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
         
-        .last-updated-out { text-align: right; font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; font-weight: 600; }
+        /* The requested "Data as of" line OUTSIDE the cards */
+        .last-updated-out { 
+            text-align: right; font-size: 13px; color: var(--text-tertiary); 
+            margin-bottom: 12px; font-weight: 600; display: none; 
+        }
 
         .session-info { margin-bottom: 1.5rem; padding: 1.5rem; }
         .session-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-start; }
@@ -241,9 +257,6 @@
         }
         input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
         body.dark-theme input[type="range"]::-webkit-slider-thumb { border-color: var(--bg-base); }
-
-        .requirement-box { padding: 14px; background: var(--leaves-ctrl-bg); border-radius: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; border: 1px solid var(--glass-border); }
-        .requirement-box strong { color: var(--text-primary); font-weight: 800; font-size: 14px; }
 
         .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.25rem; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; font-weight: 600; }
         .forecast-group input { padding: 4px 8px; width: 56px; font-size: 15px; border-radius: 8px; border: 1px solid var(--glass-border-light); background: var(--leaves-ctrl-bg); color: var(--text-primary); }
@@ -354,6 +367,7 @@
             .stat-value { font-size: 28px; }
             .stat-label { font-size: 10px; }
             .stat-meta { font-size: 11px; }
+            .last-updated-out { text-align: center; margin-bottom: 16px; }
 
             .session-info { padding: 1.25rem; margin-bottom: 1.25rem; }
             .session-grid { flex-direction: column; gap: 14px; } 
@@ -453,6 +467,26 @@
         <main>
             <div class="upload-view" id="uploadView">
                 <div id="uploadContent" class="stagger-1">
+                    
+                    <!-- PWA APP INSTALL BANNER -->
+                    <div id="installAppCard" class="install-banner glass-panel">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <svg class="verified-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 36px; height: 36px;">
+                                <path d="M12 1.25L14.75 3.19l3.19-.53l1.19 3.03l3.03 1.19l-.53 3.19L23.75 12l-1.94 2.75l.53 3.19l-3.03 1.19l-1.19 3.03l-3.19-.53L12 22.75L9.25 20.81l-3.19.53l-1.19-3.03l-3.03-1.19l.53-3.19L1.25 12l1.94-2.75l-.53-3.19l3.03-1.19l1.19-3.03l3.19.53L12 1.25Z" fill="#1D9BF0"/>
+                                <path d="M10.5 16.5c-.2 0-.39-.08-.53-.22l-3-3c-.29-.29-.29-.77 0-1.06c.29-.29.77-.29 1.06 0l2.47 2.47l6.47-6.47c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06l-7 7c-.14.14-.33.22-.53.22Z" fill="#FFFFFF"/>
+                            </svg>
+                            <div style="text-align: left;">
+                                <div style="font-weight: 800; font-size: 15px;">Install NM Attendify</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Add to Home Screen for quick access</div>
+                            </div>
+                        </div>
+                        <button class="install-btn">Install</button>
+                    </div>
+
+                    <div id="iosInstallHint" class="ios-hint stagger-2">
+                        💡 <strong>iPhone User?</strong> For the best experience, tap the <strong>Share icon</strong> at the bottom of Safari, then select <strong>"Add to Home Screen"</strong> to use NM Attendify as a native app.
+                    </div>
+
                     <div class="upload-header">
                         <h2>Track Your Attendance</h2>
                         <p>Upload your SVKM detailed attendance PDF</p>
@@ -498,7 +532,7 @@
             <div class="dashboard-view" id="dashboardView">
                 
                 <!-- Display Data As Of clearly outside the main metric card grids for cleaner visual -->
-                <div id="lastUpdatedStr" class="last-updated-out"></div>
+                <div id="lastUpdatedStr" class="last-updated-out" style="display: block;"></div>
                 
                 <div class="stats-grid stagger-1">
                     <div class="stat-card glass-panel hover-card">
@@ -514,9 +548,9 @@
                     </div>
                     
                     <div class="stat-card glass-panel hover-card">
-                        <div class="stat-label">Can Miss</div>
+                        <div class="stat-label" id="canMissLabel">Can Miss</div>
                         <div class="stat-value val-success" id="canMiss">0</div>
-                        <div class="stat-meta">classes safely</div>
+                        <div class="stat-meta" id="canMissMeta">classes safely</div>
                     </div>
                     
                     <div class="stat-card glass-panel hover-card">
@@ -592,6 +626,31 @@
         let currentData = null;
         let attendanceChartInstance = null;
         let confettiFired = false;
+        let deferredPrompt;
+
+        // --- PWA INSTALL LOGIC ---
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installAppCard').style.display = 'flex';
+        });
+
+        document.getElementById('installAppCard').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('installAppCard').style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        const isIos = () => {
+          const userAgent = window.navigator.userAgent.toLowerCase();
+          return /iphone|ipad|ipod/.test( userAgent );
+        };
+        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
         // --- CUSTOM TOAST ERRORS ---
         function showToast(message) {
@@ -655,43 +714,35 @@
                         let period = "Unknown Period";
                         let reportDate = "";
 
-                        // Enhanced Blacklist for Programme Extraction
-                        const isBlacklisted = (str) => {
-                            const s = str.toUpperCase().replace(/\s+/g, '');
-                            if (s.includes('DURATION') || s.includes('REPORT') || s.includes('ACADEMIC') || s.includes('SEMESTER') || s.includes('ATTENDANCE')) return true;
-                            if (s.startsWith('SR.') || s.startsWith('SRNO') || s === 'SR') return true;
-                            if (s === ':' || s === 'STUDENT' || s === 'COURSE' || s === 'NAME' || s === 'COURSECODE' || s.includes('ROLLNO')) return true;
-                            return false;
-                        };
-
+                        // Robust Extraction Loop
+                        let progFound = false;
                         for (let i = 0; i < items.length; i++) {
                             const item = items[i].trim();
-                            const itemUpper = item.toUpperCase();
+                            const itemUpper = item.toUpperCase().replace(/\s+/g, '');
                             
-                            // Capture Date from PDF explicitly
-                            if (itemUpper.includes('REPORT DATE') || itemUpper.includes('RUN DATE') || itemUpper === 'DATE :' || itemUpper === 'DATE') {
-                                for(let j=1; j<=3; j++) {
-                                    if (items[i+j] && /\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/.test(items[i+j])) {
-                                        reportDate = items[i+j].match(/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/)[0];
-                                        break;
-                                    }
-                                }
+                            // Capture exact Date from PDF explicitly
+                            if (!reportDate && /\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/.test(item) && !item.includes('to') && i < 40) {
+                                reportDate = item.match(/\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/)[1].replace(/\./g, '/');
                             }
                             
-                            // Program Name
-                            if (itemUpper === 'PROGRAM NAME' || itemUpper === 'PROGRAM NAME:' || itemUpper === 'PROGRAMME NAME' || itemUpper === 'PROGRAMME' || itemUpper === 'PROGRAMME:') {
-                                for(let j=1; j<=15; j++) {
-                                    if(!items[i+j]) break;
-                                    const nextItem = items[i+j].trim();
-                                    if(nextItem && nextItem.length > 2 && !isBlacklisted(nextItem) && !nextItem.startsWith('From') && !nextItem.includes('to')) {
-                                        program = nextItem;
-                                        break;
+                            // Highly Robust Program Name Extraction
+                            if (!progFound && (itemUpper === 'PROGRAMNAME' || itemUpper === 'PROGRAMNAME:' || itemUpper === 'PROGRAMMENAME' || itemUpper === 'PROGRAMME' || itemUpper === 'PROGRAMME:')) {
+                                if (items[i].includes(':') && items[i].split(':')[1].trim().length > 3) {
+                                    program = items[i].split(':')[1].trim();
+                                    progFound = true;
+                                } else {
+                                    for(let j=1; j<=5; j++) {
+                                        if(!items[i+j]) break;
+                                        const nextItem = items[i+j].trim();
+                                        const nUp = nextItem.toUpperCase();
+                                        // Ignore page numbers, dashed lines, short strings
+                                        if (nextItem.length > 3 && !/^[\W_0-9]+$/.test(nextItem) && !nUp.includes('DURATION') && !nUp.includes('REPORT') && !nUp.includes('ATTENDANCE') && !nUp.includes('SEMESTER')) {
+                                            program = nextItem;
+                                            progFound = true;
+                                            break;
+                                        }
                                     }
                                 }
-                            } else if (itemUpper.startsWith('PROGRAM NAME:') && item.length > 13) {
-                                program = item.substring(13).trim();
-                            } else if (itemUpper.startsWith('PROGRAMME:') && item.length > 10) {
-                                program = item.substring(10).trim();
                             }
 
                             // Semester
@@ -724,6 +775,9 @@
                                 }
                             }
                         }
+                        
+                        // Clean program name (Removes weird characters like ---0---)
+                        program = program.replace(/[\-\_0-9]+$/, '').replace(/---/g, '').trim();
 
                         // Student Name
                         const attRepIdx = items.indexOf('Attendance Report');
@@ -911,21 +965,35 @@
                 document.getElementById('lastUpdatedStr').textContent = `Data as of: ${currentData.lastUpdated}`;
             }
 
-            // Real "Can Miss / Need to Reach" logic maintaining the target ratio
-            let canMiss = 0;
-            let classesNeeded = 0;
+            // --- Real "Can Miss / Need to Reach" Logic ---
+            let canMissVal = document.getElementById('canMiss');
+            let canMissLabel = document.getElementById('canMissLabel');
+            let canMissMeta = document.getElementById('canMissMeta');
+            let targetRequirementText = "";
             
             if (stats.totalAttended >= p * stats.totalClasses) {
                 // Safely above target
-                canMiss = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
-                document.getElementById('targetRequirement').innerHTML = `Can miss <strong style="color: var(--success); font-size: 16px;">${canMiss}</strong> classes to be above ${target}%`;
+                let canMiss = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
+                
+                canMissVal.textContent = canMiss;
+                canMissVal.className = 'stat-value val-success';
+                canMissLabel.textContent = 'Can Miss';
+                canMissMeta.textContent = 'classes safely';
+                
+                targetRequirementText = `Can miss <strong style="color: var(--success); font-size: 16px;">${canMiss}</strong> classes to be above ${target}%`;
             } else {
                 // Below target
-                classesNeeded = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
-                document.getElementById('targetRequirement').innerHTML = `Need <strong style="color: var(--danger); font-size: 16px;">${classesNeeded}</strong> classes to reach ${target}%`;
+                let needed = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
+                
+                canMissVal.textContent = needed;
+                canMissVal.className = 'stat-value val-danger'; // Turns text red
+                canMissLabel.textContent = 'Need to Attend';
+                canMissMeta.textContent = `to reach ${target}%`;
+                
+                targetRequirementText = `Need <strong style="color: var(--danger); font-size: 16px;">${needed}</strong> classes to reach ${target}%`;
             }
             
-            document.getElementById('canMiss').textContent = canMiss;
+            document.getElementById('targetRequirement').innerHTML = targetRequirementText;
 
             const forecastDays = parseInt(document.getElementById('forecastDays').value) || 0;
             const attendAll = Math.round(((stats.totalAttended + forecastDays) / (stats.totalClasses + forecastDays)) * 100) || 0;
@@ -1095,6 +1163,7 @@
             document.getElementById('absentLogBtn').style.display = 'none';
             document.getElementById('exportBtn').style.display = 'none';
             document.getElementById('fileInput').value = '';
+            document.getElementById('installAppCard').style.display = 'none';
         }
 
         // --- ABSENT LOG MODAL LOGIC ---
@@ -1149,6 +1218,7 @@
             const semester = currentData.semester || "";
             const period = currentData.period || "";
 
+            // New structured WhatsApp message
             const textToShare = `${studentName} - ${semester}\nAttendance from ${period}\n\n📈 Overall: ${stats.overall}%\n✅ Attended: ${stats.totalAttended} / ${stats.totalClasses} classes\n\n${targetActionText}\n\nCheck your attendance securely at:\nhttps://nm-attendify.vercel.app`;
             
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
@@ -1200,6 +1270,11 @@
                 setTimeout(() => {
                     document.getElementById('sharePopup').classList.add('show');
                 }, 1500); 
+            }
+            
+            // Show iOS PWA hint if applicable and on upload screen
+            if (isIos() && !isInStandaloneMode() && !currentData) {
+                document.getElementById('iosInstallHint').style.display = 'block';
             }
         };
     </script>
