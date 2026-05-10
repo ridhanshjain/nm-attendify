@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NM Attendify - Smart Analytics</title>
+    
+    <!-- We bring in two external tools here: 
+         1. Chart.js (for drawing the glowing history graph)
+         2. html2canvas (for taking screenshots of the dashboard) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- NEW: Premium Grotesk Font to match Perplexity's vibe -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- THEME VARIABLES --- */
+        /* These default to the Dark Glassmorphic Theme */
+        :root {
+            --primary: #1D9BF0; /* Bright Twitter/Verified Blue */
+            --primary-dark: #0C7ABF; 
+            --success: #10B981; 
+            --warning: #F59E0B; 
+            --danger: #EF4444; 
+            
+            --bg-base: #0F172A; /* Deep dark background */
+            --glass-bg: rgba(30, 41, 59, 0.4); 
+            --glass-bg-hover: rgba(30, 41, 59, 0.6); 
+            --glass-border: rgba(255, 255, 255, 0.08); 
+            --glass-border-light: rgba(255, 255, 255, 0.15); 
+            --glass-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1); 
+            --glass-shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            
+            --text-primary: #F8FAFC; 
+            --text-secondary: #94A3B8; 
+            --text-tertiary: #64748B; 
+            
+            --gradient-1: rgba(29, 155, 240, 0.15);
+            --gradient-2: rgba(139, 92, 246, 0.12);
+        }
+
+        /* --- LIGHT THEME OVERRIDES --- */
+        /* When we add the 'light-theme' class to the body, all these colors instantly swap! */
+        body.light-theme {
+            --bg-base: #F1F5F9; /* Very light grayish blue */
+            --glass-bg: rgba(255, 255, 255, 0.6); /* Frosted white glass */
+            --glass-bg-hover: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.05); /* Darker borders for contrast */
+            --glass-border-light: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            --glass-shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+            
+            --text-primary: #0F172A; /* Black text */
+            --text-secondary: #475569; 
+            --text-tertiary: #94A3B8;
+            
+            --gradient-1: rgba(29, 155, 240, 0.1);
+            --gradient-2: rgba(139, 92, 246, 0.08);
+        }
+
+        body {
+            font-family: 'Familjen Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            /* Glowing background blobs that adapt to light/dark mode */
+            background-image: 
+                radial-gradient(at 0% 0%, var(--gradient-1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, var(--gradient-2) 0px, transparent 50%);
+            background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 12px;
+            transition: background 0.2s;
+            margin-left: -12px; /* Offset the padding */
+        }
+        
+        .header-left:hover {
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        /* The new Verified Badge Logo styling */
+        .logo-svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 6px rgba(29, 155, 240, 0.4));
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.2px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Icon Buttons (Theme toggle, Camera) */
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border-light);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .icon-btn:hover {
+            background: var(--glass-bg-hover);
+            transform: scale(1.05);
+        }
+
+        /* Text Buttons (Clear Data) */
+        .text-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--danger);
+            cursor: pointer;
+            display: none; /* Hidden until data is loaded */
+            transition: all 0.2s;
+        }
+
+        .text-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism base class - Bezeled look */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            /* Bezel lighting and border */
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-border-light);
+            border-left: 1px solid var(--glass-border-light);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Smooth floating hover animation for cards */
+        .hover-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--glass-shadow-hover);
+            border-color: var(--glass-border-light);
+            background: var(--glass-bg-hover);
+            z-index: 10;
+        }
+
+        /* UPLOAD SCREEN */
+        .upload-view {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-header { text-align: center; }
+        .upload-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+        .upload-header p { color: var(--text-secondary); }
+
+        /* The loading spinner that shows while parsing PDF */
+        .loading-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--glass-border-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .portal-link-btn {
+            display: block;
+            width: 100%;
+            background: rgba(29, 155, 240, 0.1);
+            border: 1px solid rgba(29, 155, 240, 0.3);
+            color: var(--primary);
+            text-align: center;
+            padding: 14px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .portal-link-btn:hover {
+            background: rgba(29, 155, 240, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Added wrapper spacing to give breathing room before the drag/drop zone */
+        .upload-spacing-wrapper {
+            margin: 2.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        #uploadZone {
+            padding: 4rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            border: 2px dashed var(--glass-border-light);
+        }
+
+        #uploadZone:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--primary);
+        }
+
+        .upload-icon { font-size: 48px; margin-bottom: 16px; }
+        .upload-text-main { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+        .upload-text-sub { font-size: 13px; color: var(--text-secondary); }
+        #fileInput { display: none; }
+
+        .info-box { padding: 1.5rem; border-left: 4px solid var(--primary); }
+        .info-box-title { font-weight: 600; margin-bottom: 12px; display: flex; gap: 8px; }
+        .info-box ol { margin: 0; padding-left: 24px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+        /* DASHBOARD SCREEN */
+        .dashboard-view { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card { padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: center; }
+        .stat-label { font-size: 14px; color: var(--text-secondary); font-weight: 600; margin-bottom: 12px; }
+        .stat-value { font-size: 36px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+        .val-primary { color: var(--primary); }
+        .val-success { color: var(--success); }
+        .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 500; }
+
+        /* Chart Section */
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .chart-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 3rem;
+        }
+
+        .control-card { padding: 2rem; }
+        .control-header { font-weight: 700; font-size: 18px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; }
+
+        .control-input-group { display: flex; align-items: baseline; gap: 10px; margin-bottom: 1.5rem; }
+        input[type="number"] {
+            width: 80px; font-size: 24px; font-weight: 700; padding: 8px 12px;
+            border: 1px solid var(--glass-border-light); border-radius: 12px;
+            background: rgba(128, 128, 128, 0.1); color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        input[type="number"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.2); }
+
+        input[type="range"] {
+            width: 100%; height: 8px; border-radius: 4px;
+            background: var(--glass-border-light); outline: none; -webkit-appearance: none; margin-bottom: 2rem;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+            background: var(--primary); cursor: pointer; border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.1s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+
+        .requirement-box { padding: 16px; background: rgba(128, 128, 128, 0.1); border-radius: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+        .requirement-box strong { color: var(--text-primary); font-weight: 700; font-size: 15px; }
+
+        .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.5rem; font-size: 14px; color: var(--text-secondary); }
+        .forecast-results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .forecast-result { padding: 16px; border-radius: 16px; text-align: center; border: 1px solid; background: rgba(128, 128, 128, 0.05); }
+        .forecast-attend { border-color: rgba(16, 185, 129, 0.3); }
+        .forecast-miss { border-color: rgba(239, 68, 68, 0.3); }
+        .forecast-result-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary); }
+        .forecast-result-value { font-size: 24px; font-weight: 800; }
+        .forecast-attend .forecast-result-value { color: var(--success); }
+        .forecast-miss .forecast-result-value { color: var(--danger); }
+
+        /* Subjects */
+        .section-header { margin-bottom: 2rem; }
+        .section-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+        .section-subtitle { font-size: 15px; color: var(--text-secondary); }
+
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .subject-card { padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .subject-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+        .subject-name { font-weight: 700; font-size: 16px; line-height: 1.4; padding-right: 12px; }
+
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .status-good { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .status-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .progress-bar { background: var(--glass-border-light); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #8B5CF6); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        .subject-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary); align-items: center; font-weight: 500; }
+
+        /* NEW: Official Leaves Tracker UI */
+        .leaves-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(128, 128, 128, 0.1);
+            padding: 4px 8px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        .leave-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .leave-btn:hover { background: rgba(128, 128, 128, 0.2); }
+        .leave-count { font-weight: 700; color: var(--primary); font-size: 14px; min-width: 16px; text-align: center; }
+
+        .session-info { margin-top: 4rem; padding: 2rem; }
+        .session-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; font-size: 14px; }
+        .session-item { display: flex; flex-direction: column; gap: 6px; }
+        .session-item span:first-child { color: var(--text-tertiary); text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 15px; }
+
+        @media (max-width: 768px) {
+            main { padding: 1.5rem 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 2rem; }
+            .controls-grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 2rem; }
+            .subjects-grid { grid-template-columns: 1fr; gap: 16px; }
+            .stat-value { font-size: 28px; }
+        }
+
+        /* Hides buttons temporarily when we take a screenshot */
+        .hide-on-export { display: none !important; }
+    </style>
+</head>
+<body class="dark-theme">
+    <div id="app">
+        <!-- HEADER -->
+        <header>
+            <div class="header-left" onclick="resetToUpload()" title="Go Home">
+                <!-- Wavy Blue Verified Starburst Logo -->
+                <svg class="logo-svg" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 11.99l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 11.99l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 11.99zm-12.47 5.92L6 13.38l1.41-1.41 3.12 3.12 7.06-7.06 1.41 1.41-8.47 8.47z"/>
+                </svg>
+                <div class="logo-text">
+                    <h1>NM Attendify</h1>
+                    <p>Smart Analytics</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <!-- Clear Data Button -->
+                <button id="clearDataBtn" class="text-btn">Clear Data</button>
+                
+                <!-- Contact Button -->
+                <a href="mailto:support@nmattendify.com" class="icon-btn" title="Contact Support">💬</a>
+                
+                <!-- Export to Image Button -->
+                <button id="exportBtn" class="icon-btn" title="Screenshot & Share" style="display: none;">📸</button>
+                
+                <!-- Dark/Light Theme Toggle -->
+                <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">☀️</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- ================= UPLOAD SCREEN ================= -->
+            <div class="upload-view" id="uploadView">
+                
+                <!-- Default Upload UI -->
+                <div id="uploadContent">
+                    <div class="upload-header">
+                        <h2>Track Your Attendance</h2>
+                        <p>Upload your SVKM detailed attendance PDF</p>
+                    </div>
+
+                    <div class="upload-spacing-wrapper">
+                        <a href="https://sdc-sppap1.svkm.ac.in:50001/irj/portal" target="_blank" class="portal-link-btn glass-panel hover-card">
+                            🌐 Open SVKM Portal
+                        </a>
+
+                        <div id="uploadZone" class="glass-panel hover-card">
+                            <div class="upload-icon">📄</div>
+                            <div class="upload-text-main">Click to upload or drag & drop</div>
+                            <div class="upload-text-sub">Supports PDF files only</div>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="fileInput" accept=".pdf">
+
+                    <div class="info-box glass-panel hover-card" style="margin-top: 1rem;">
+                        <div class="info-box-title"><span>ℹ️</span><span>How to get your PDF</span></div>
+                        <ol>
+                            <li>Click the portal button above to log in</li>
+                            <li>Navigate to the Attendance section</li>
+                            <li>Download your "Detailed Attendance" PDF</li>
+                            <li>Upload the file into the box above</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Fake Loading Screen for PDF Parsing -->
+                <div id="loadingOverlay" class="glass-panel loading-overlay">
+                    <div class="spinner"></div>
+                    <h3 style="font-weight: 600;">Analyzing PDF...</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Extracting your subjects and attendance data.</p>
+                </div>
+            </div>
+
+            <!-- ================= DASHBOARD SCREEN ================= -->
+            <div class="dashboard-view" id="dashboardView">
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">Overall Attendance</div>
+                        <div class="stat-value val-primary" id="overallPct">--%</div>
+                        <div class="stat-meta" id="overallMeta">0/0 classes</div>
+                    </div>
+                    
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">Classes Attended</div>
+                        <div class="stat-value" id="attendedCount">0</div>
+                        <div class="stat-meta">including official leaves</div>
+                    </div>
+                    
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">Can Miss</div>
+                        <div class="stat-value val-success" id="canMiss">0</div>
+                        <div class="stat-meta">classes safely</div>
+                    </div>
+                    
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">Subjects Traced</div>
+                        <div class="stat-value" id="subjectCount">0</div>
+                        <div class="stat-meta">active courses</div>
+                    </div>
+                </div>
+
+                <!-- NEW: Attendance History Graph -->
+                <div class="chart-container glass-panel hover-card">
+                    <div class="chart-header">📈 Semester Trend</div>
+                    <!-- Chart.js draws into this canvas -->
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+
+                <!-- Controls: Target and Forecast -->
+                <div class="controls-grid">
+                    <div class="control-card glass-panel hover-card">
+                        <div class="control-header"><span>🎯</span><span>Target Attendance</span></div>
+                        <div class="control-input-group">
+                            <input type="number" id="targetInput" value="75" min="0" max="100">
+                            <span class="unit">%</span>
+                        </div>
+                        <input type="range" id="targetSlider" value="75" min="0" max="100">
+                        <div class="requirement-box">
+                            <div style="margin-bottom: 4px;">To maintain <strong id="targetDisplay">75%</strong>:</div>
+                            <div id="targetRequirement">• Need to attend more classes</div>
+                        </div>
+                    </div>
+
+                    <div class="control-card glass-panel hover-card">
+                        <div class="control-header"><span>🔮</span><span>Future Forecast</span></div>
+                        <div class="forecast-group">
+                            <label>If you attend the next</label>
+                            <input type="number" id="forecastDays" value="5" min="1" max="50">
+                            <label>classes:</label>
+                        </div>
+                        <div class="forecast-results">
+                            <div class="forecast-result forecast-attend">
+                                <div class="forecast-result-label">Attended All</div>
+                                <div class="forecast-result-value" id="forecastAttend">--%</div>
+                            </div>
+                            <div class="forecast-result forecast-miss">
+                                <div class="forecast-result-label">Missed All</div>
+                                <div class="forecast-result-value" id="forecastMiss">--%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subjects -->
+                <div class="subjects-section">
+                    <div class="section-header">
+                        <div class="section-title">Subjects Breakdown</div>
+                        <div class="section-subtitle">Add official leaves using the + button to protect your percentage</div>
+                    </div>
+                    <div class="subjects-grid" id="subjectsGrid">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Session Info -->
+                <div class="session-info glass-panel hover-card">
+                    <div class="session-grid">
+                        <div class="session-item"><span>Student</span> <span id="studentName">-</span></div>
+                        <div class="session-item"><span>Program</span> <span id="program">-</span></div>
+                        <div class="session-item"><span>Semester</span> <span id="semester">-</span></div>
+                        <div class="session-item"><span>Report Date</span> <span id="analyzedDate">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA & STATE ---
+        let currentData = null;
+        let attendanceChartInstance = null;
+
+        // Base Mock Data (Fallback if no local storage)
+        const generateMockData = () => ({
+            studentName: "Arjun Sharma",
+            program: "B.Tech (Information Technology)",
+            semester: "VI",
+            analyzedDate: new Date().toLocaleDateString(),
+            // History array tracks the last 5 weeks of percentages for the chart
+            history: [68, 71, 70, 73, 75], 
+            subjects: [
+                { name: "Cloud Computing", attended: 18, total: 24, nus: 1, officialLeaves: 0 },
+                { name: "Data Science", attended: 19, total: 22, nus: 0, officialLeaves: 0 },
+                { name: "DevOps Engineering", attended: 21, total: 23, nus: 0, officialLeaves: 0 },
+                { name: "Ethical Hacking", attended: 14, total: 23, nus: 2, officialLeaves: 0 },
+                { name: "Advanced Databases", attended: 15, total: 20, nus: 0, officialLeaves: 0 },
+                { name: "Mobile Development", attended: 20, total: 23, nus: 1, officialLeaves: 0 }
+            ]
+        });
+
+        // --- CORE MATH & LOGIC ---
+
+        function calculateStats() {
+            if (!currentData) return;
+            
+            let totalAttended = 0, totalClasses = 0;
+            
+            currentData.subjects.forEach(s => {
+                totalClasses += s.total;
+                // Official leaves count as "Attended" without exceeding total classes
+                let effectiveAttended = s.attended + (s.officialLeaves || 0);
+                effectiveAttended = Math.min(effectiveAttended, s.total); 
+                totalAttended += effectiveAttended;
+            });
+
+            const overall = totalClasses ? Math.round((totalAttended / totalClasses) * 100) : 0;
+            return { overall, totalAttended, totalClasses };
+        }
+
+        function getStatusClass(percentage) {
+            if (percentage >= 75) return 'status-good';
+            if (percentage >= 65) return 'status-warning';
+            return 'status-danger';
+        }
+
+        // Feature: Update Official Leaves
+        window.updateLeaves = function(subjectIndex, change) {
+            if (!currentData) return;
+            const subject = currentData.subjects[subjectIndex];
+            
+            // Math: leaves can't go below 0, and total attended + leaves can't exceed total classes
+            let newLeaves = (subject.officialLeaves || 0) + change;
+            if (newLeaves < 0) newLeaves = 0;
+            if ((subject.attended + newLeaves) > subject.total) newLeaves = subject.total - subject.attended;
+            
+            subject.officialLeaves = newLeaves;
+            
+            saveDataToLocal(); // Save so refreshing keeps the leaves!
+            updateDashboard(); // Redraw UI instantly
+        };
+
+        // --- DASHBOARD UI UPDATER ---
+
+        function updateDashboard() {
+            if (!currentData) return;
+
+            const stats = calculateStats();
+            const target = parseInt(document.getElementById('targetInput').value);
+
+            // Update Top Cards
+            document.getElementById('overallPct').textContent = stats.overall + '%';
+            document.getElementById('overallMeta').textContent = `${stats.totalAttended}/${stats.totalClasses} classes`;
+            document.getElementById('attendedCount').textContent = stats.totalAttended;
+            document.getElementById('subjectCount').textContent = currentData.subjects.length;
+
+            // Target Math
+            const needed = Math.ceil((target / 100) * stats.totalClasses);
+            const canMiss = Math.max(0, stats.totalAttended + (stats.totalClasses - stats.totalAttended) - needed);
+            document.getElementById('canMiss').textContent = canMiss;
+
+            if (stats.overall >= target) {
+                document.getElementById('targetRequirement').innerHTML = `✨ You're safely above the target!`;
+            } else {
+                const stillNeed = needed - stats.totalAttended;
+                document.getElementById('targetRequirement').innerHTML = `You need <strong>${stillNeed}</strong> more classes to hit target.`;
+            }
+
+            // Forecast Math
+            const forecastDays = parseInt(document.getElementById('forecastDays').value) || 0;
+            const attendAll = Math.round(((stats.totalAttended + forecastDays) / (stats.totalClasses + forecastDays)) * 100);
+            const missAll = Math.round((stats.totalAttended / (stats.totalClasses + forecastDays)) * 100);
+            
+            document.getElementById('forecastAttend').textContent = attendAll + '%';
+            document.getElementById('forecastMiss').textContent = missAll + '%';
+
+            // Student Info
+            document.getElementById('studentName').textContent = currentData.studentName;
+            document.getElementById('program').textContent = currentData.program;
+            document.getElementById('semester').textContent = currentData.semester;
+            document.getElementById('analyzedDate').textContent = currentData.analyzedDate;
+
+            // Render Subjects
+            const grid = document.getElementById('subjectsGrid');
+            grid.innerHTML = currentData.subjects.map((s, index) => {
+                let effectiveAttended = Math.min(s.total, s.attended + (s.officialLeaves || 0));
+                const pct = Math.round((effectiveAttended / s.total) * 100);
+                const status = getStatusClass(pct);
+                
+                return `
+                    <div class="subject-card glass-panel hover-card">
+                        <div class="subject-header">
+                            <div class="subject-name">${s.name}</div>
+                            <span class="status-badge ${status}">${pct}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${pct}%;"></div>
+                        </div>
+                        <div class="subject-meta">
+                            <span>${effectiveAttended}/${s.total} Attended</span>
+                            
+                            <!-- NEW: Official Leaves Counter inside card -->
+                            <div class="leaves-control">
+                                <span title="Official Leaves" style="font-size: 14px;">🏥</span>
+                                <button class="leave-btn" onclick="updateLeaves(${index}, -1)">-</button>
+                                <span class="leave-count">${s.officialLeaves || 0}</span>
+                                <button class="leave-btn" onclick="updateLeaves(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update Chart
+            renderChart(stats.overall);
+        }
+
+        // --- CHART JS LOGIC ---
+        function renderChart(currentOverall) {
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            
+            // Build the data array: History + The live current percentage
+            const chartData = [...currentData.history, currentOverall];
+            const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Live'];
+
+            // Destroy old chart to prevent overlapping glitches when redrawing
+            if (attendanceChartInstance) attendanceChartInstance.destroy();
+
+            // Set colors dynamically based on light/dark mode
+            const isLight = document.body.classList.contains('light-theme');
+            const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+            const textColor = isLight ? '#475569' : '#94A3B8';
+
+            // Create a beautiful glowing gradient for the area under the line
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(29, 155, 240, 0.4)'); // Verified Blue opacity
+            gradient.addColorStop(1, 'rgba(29, 155, 240, 0.0)'); // Fades to transparent
+
+            attendanceChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Overall %',
+                        data: chartData,
+                        borderColor: '#1D9BF0', // Verified Blue
+                        backgroundColor: gradient, // Soft gradient glow fill
+                        borderWidth: 4, // Thicker, bolder line
+                        tension: 0.4, // Makes the line smoothly curved
+                        fill: true,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#1D9BF0',
+                        pointBorderWidth: 3,
+                        pointRadius: 5, // Larger dots
+                        pointHoverRadius: 8 // Even larger on hover
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: { 
+                        legend: { display: false }, // Hide the top legend
+                        tooltip: {
+                            backgroundColor: isLight ? 'rgba(255,255,255,0.9)' : 'rgba(15,23,42,0.9)',
+                            titleColor: isLight ? '#0F172A' : '#F8FAFC',
+                            bodyColor: isLight ? '#0F172A' : '#F8FAFC',
+                            borderColor: isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }, 
+                    scales: {
+                        y: { 
+                            beginAtZero: false, 
+                            min: Math.min(...chartData) - 5 < 50 ? Math.floor(Math.min(...chartData) / 10) * 10 : 50, // Smart min scale
+                            max: 100,
+                            grid: { 
+                                color: gridColor,
+                                drawBorder: false,
+                                borderDash: [5, 5] // Dashed grid lines for a cleaner look
+                            },
+                            ticks: { 
+                                color: textColor,
+                                padding: 10,
+                                font: { family: "'Familjen Grotesk', sans-serif", size: 12 },
+                                callback: (val) => val + '%' 
+                            }
+                        },
+                        x: { 
+                            grid: { display: false, drawBorder: false },
+                            ticks: { 
+                                color: textColor,
+                                padding: 10,
+                                font: { family: "'Familjen Grotesk', sans-serif", size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- PDF PARSING & DATA FLOW ---
+
+        /* * FEATURE HOOK: Real PDF Parsing
+         * You mentioned providing the PDF format in the next prompt.
+         * For now, this function pretends to read a PDF by waiting 2 seconds, 
+         * and then handing back our Mock Data.
+         */
+        async function extractDataFromPDF(file) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // ** TODO IN NEXT PROMPT: Add actual PDF text extraction logic here **
+                    resolve(generateMockData()); 
+                }, 1500); // Wait 1.5 seconds to simulate loading
+            });
+        }
+
+        async function handleFileUpload(file) {
+            if (!file) return;
+
+            // Show loading screen, hide normal upload UI
+            document.getElementById('uploadContent').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            try {
+                // Wait for the (currently fake) PDF parsing
+                currentData = await extractDataFromPDF(file);
+                
+                saveDataToLocal(); // Save to browser memory
+                showDashboard();
+            } catch (error) {
+                alert("Error reading PDF. Please try again.");
+                resetToUpload();
+            }
+        }
+
+        // --- LOCAL STORAGE (REMEMBER ME) ---
+        
+        function saveDataToLocal() {
+            if (currentData) {
+                localStorage.setItem('nmat_data', JSON.stringify(currentData));
+            }
+        }
+
+        function loadDataFromLocal() {
+            const saved = localStorage.getItem('nmat_data');
+            if (saved) {
+                currentData = JSON.parse(saved);
+                showDashboard();
+                return true;
+            }
+            return false;
+        }
+
+        // --- UI NAVIGATION ---
+
+        function showDashboard() {
+            document.getElementById('uploadView').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'block';
+            document.getElementById('clearDataBtn').style.display = 'block';
+            document.getElementById('exportBtn').style.display = 'flex'; // Show camera
+            updateDashboard();
+        }
+
+        function resetToUpload() {
+            currentData = null;
+            localStorage.removeItem('nmat_data'); // Clear saved memory
+            document.getElementById('uploadView').style.display = 'flex';
+            document.getElementById('uploadContent').style.display = 'block';
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('clearDataBtn').style.display = 'none';
+            document.getElementById('exportBtn').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+        }
+
+        // --- EXPORT TO IMAGE (FLEX FEATURE) ---
+        
+        document.getElementById('exportBtn').addEventListener('click', async () => {
+            const dashboard = document.getElementById('dashboardView');
+            const exportBtn = document.getElementById('exportBtn');
+            const clearBtn = document.getElementById('clearDataBtn');
+            
+            // 1. Temporarily hide buttons we don't want in the screenshot
+            exportBtn.classList.add('hide-on-export');
+            clearBtn.classList.add('hide-on-export');
+
+            try {
+                // 2. Use html2canvas to take a literal picture of the HTML layout
+                const canvas = await html2canvas(dashboard, {
+                    scale: 2, // 2x scale makes the exported image high-definition
+                    backgroundColor: document.body.classList.contains('light-theme') ? '#F1F5F9' : '#0F172A',
+                    useCORS: true
+                });
+
+                // 3. Convert picture to a downloadable URL
+                const image = canvas.toDataURL('image/png');
+                
+                // 4. Force browser to download the image
+                const link = document.createElement('a');
+                link.download = `NM_Attendify_Flex_${new Date().getTime()}.png`;
+                link.href = image;
+                link.click();
+            } catch(e) {
+                alert("Failed to export image.");
+            } finally {
+                // 5. Bring the buttons back
+                exportBtn.classList.remove('hide-on-export');
+                clearBtn.classList.remove('hide-on-export');
+            }
+        });
+
+        // --- THEME TOGGLE (DARK/LIGHT MODE) ---
+        
+        const themeBtn = document.getElementById('themeToggleBtn');
+        
+        // Check if user previously saved a theme preference
+        if(localStorage.getItem('nmat_theme') === 'light') {
+            document.body.classList.add('light-theme');
+            themeBtn.textContent = '🌙';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            
+            // Swap icon
+            themeBtn.textContent = isLight ? '🌙' : '☀️';
+            
+            // Save to browser memory
+            localStorage.setItem('nmat_theme', isLight ? 'light' : 'dark');
+            
+            // Redraw the graph to fix grid line colors
+            if(currentData) updateDashboard(); 
+        });
+
+        // --- EVENT LISTENERS ---
+
+        document.getElementById('uploadZone').addEventListener('click', () => document.getElementById('fileInput').click());
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleFileUpload(e.target.files[0]);
+        });
+
+        document.getElementById('clearDataBtn').addEventListener('click', resetToUpload);
+
+        document.getElementById('targetInput').addEventListener('input', (e) => {
+            document.getElementById('targetSlider').value = e.target.value;
+            updateDashboard();
+        });
+
+        document.getElementById('targetSlider').addEventListener('input', (e) => {
+            document.getElementById('targetInput').value = e.target.value;
+            updateDashboard();
+        });
+
+        document.getElementById('forecastDays').addEventListener('input', updateDashboard);
+
+        // Drag and Drop Effects
+        const zone = document.getElementById('uploadZone');
+        zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.style.borderColor = 'var(--primary)'; });
+        zone.addEventListener('dragleave', () => { zone.style.borderColor = 'var(--glass-border-light)'; });
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.style.borderColor = 'var(--glass-border-light)';
+            if (e.dataTransfer.files.length > 0) handleFileUpload(e.dataTransfer.files[0]);
+        });
+
+        // --- INITIALIZATION ---
+        // When the page opens, check if we have saved data to load automatically
+        window.onload = () => {
+            loadDataFromLocal();
+        };
+
+    </script>
+</body>
+</html>
