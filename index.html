@@ -1265,6 +1265,9 @@
                 document.getElementById('installAppCard').style.display = 'flex';
             }
         };
+        if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
     </script>
 </body>
 </html>
