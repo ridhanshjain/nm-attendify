@@ -99,7 +99,7 @@
 
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 12px; transition: background 0.2s; margin-left: -12px; }
         .header-left:hover { background: rgba(128, 128, 128, 0.1); }
-        .verified-logo { width: 30px; height: 30px; color: var(--primary); filter: drop-shadow(0 0 6px rgba(29, 155, 240, 0.3)); }
+        .verified-logo { width: 30px; height: 30px; color: var(--primary); filter: drop-shadow(0 0 6px rgba(29, 155, 240, 0.3)); flex-shrink: 0; }
         .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.3px; color: var(--text-primary); }
         .logo-text p { font-size: 12px; color: var(--primary); margin: 0; font-weight: 600; letter-spacing: -0.2px; }
         
@@ -110,12 +110,12 @@
             width: 36px; height: 36px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; cursor: pointer;
             color: var(--text-primary); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 16px;
-            text-decoration: none; position: relative;
+            text-decoration: none; position: relative; flex-shrink: 0;
         }
         .icon-btn:hover { background: var(--glass-bg-hover); transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .icon-btn:active { transform: scale(0.95); }
 
-        .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; margin-left: 4px; }
+        .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; margin-left: 4px; flex-shrink: 0; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
         .switch-slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
@@ -198,7 +198,7 @@
         .session-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; font-size: 14px; }
         .session-item { display: flex; flex-direction: column; gap: 6px; }
         .session-item span:first-child { color: var(--text-tertiary); text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
-        .session-item span:last-child { font-weight: 600; color: var(--text-primary); font-size: 15px; }
+        .session-item span:last-child { font-weight: 600; color: var(--text-primary); font-size: 15px; word-break: break-word; }
 
         .chart-container { width: 100%; height: 300px; padding: 2rem; margin-bottom: 3rem; position: relative; border-radius: 20px; }
         .chart-header { font-size: 18px; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; letter-spacing: -0.3px; }
@@ -232,7 +232,9 @@
         .requirement-box { padding: 16px; background: var(--leaves-ctrl-bg); border-radius: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.5; border: 1px solid var(--glass-border); }
         .requirement-box strong { color: var(--text-primary); font-weight: 700; font-size: 15px; }
 
-        .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.5rem; font-size: 14px; color: var(--text-secondary); }
+        .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.5rem; font-size: 14px; color: var(--text-secondary); flex-wrap: wrap; }
+        .forecast-group input { padding: 6px; width: 60px; font-size: 16px; border-radius: 8px; border: 1px solid var(--glass-border-light); background: var(--leaves-ctrl-bg); color: var(--text-primary); }
+        
         .forecast-results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .forecast-result { padding: 16px; border-radius: 14px; text-align: center; border: 1px solid var(--glass-border); background: var(--leaves-ctrl-bg); }
         .forecast-attend { border-color: rgba(16, 185, 129, 0.3); }
@@ -266,7 +268,7 @@
 
         .subject-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary); align-items: center; font-weight: 500; }
 
-        .leaves-control { display: flex; align-items: center; gap: 12px; background: var(--leaves-ctrl-bg); padding: 6px 14px; border-radius: 24px; border: none; }
+        .leaves-control { display: flex; align-items: center; gap: 12px; background: var(--leaves-ctrl-bg); padding: 6px 14px; border-radius: 24px; border: none; flex-shrink: 0; }
         .ag-label { font-size: 13px; font-weight: 800; color: var(--text-secondary); }
         .leave-btn { background: transparent; border: none; color: var(--text-primary); cursor: pointer; font-size: 18px; font-weight: bold; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; font-family: inherit; line-height: 1; padding-bottom: 2px; }
         .leave-btn:hover { background: rgba(128, 128, 128, 0.2); }
@@ -321,18 +323,48 @@
             box-shadow: none !important; transition: none !important;
         }
 
+        /* STRICT MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
-            main { padding: 1.5rem 1rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.5rem; }
-            .session-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-            .controls-grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 2rem; }
-            .subjects-grid { grid-template-columns: 1fr; gap: 16px; } 
-            .stat-value { font-size: 32px; }
-            .toast-container { top: 80px; right: 16px; left: 16px; }
-            .chart-container { padding: 1.5rem 1rem; }
-            .theme-switch { width: 50px; height: 28px; }
-            .switch-slider:before { height: 20px; width: 20px; }
+            main { padding: 1rem; }
+            header { padding: 0.75rem 1rem; }
+            .logo-text h1 { font-size: 16px; }
+            .logo-text p { font-size: 11px; }
+            .verified-logo { width: 24px; height: 24px; }
+            
+            .header-actions { gap: 8px; }
+            .icon-btn { width: 32px; height: 32px; font-size: 14px; }
+            .theme-switch { width: 48px; height: 26px; }
+            .switch-slider:before { height: 18px; width: 18px; bottom: 3px; }
             input:checked + .switch-slider:before { transform: translateX(22px); }
+            
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+            .stat-card { padding: 1rem; }
+            .stat-value { font-size: 28px; }
+            .stat-label { font-size: 11px; }
+            .stat-meta { font-size: 11px; }
+
+            .session-info { padding: 1.25rem; margin-bottom: 1.5rem; }
+            .session-grid { grid-template-columns: 1fr; gap: 12px; } 
+
+            .controls-grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 1.5rem; }
+            .control-card { padding: 1.25rem; }
+            .control-header { font-size: 15px; margin-bottom: 1rem; }
+            .forecast-results { grid-template-columns: 1fr; gap: 8px; }
+
+            .chart-container { padding: 1rem; height: 250px; margin-bottom: 1.5rem; }
+            
+            .subjects-grid { grid-template-columns: 1fr; gap: 12px; }
+            .subject-card { padding: 1.25rem; }
+            .subject-name { font-size: 14px; }
+            .subject-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .leaves-control { width: 100%; justify-content: space-between; }
+            
+            #uploadZone { padding: 2.5rem 1rem; }
+            .upload-icon { font-size: 36px; }
+            .upload-header h2 { font-size: 26px; }
+            
+            .toast-container { top: 80px; right: 16px; left: 16px; }
+            .share-popup-content { padding: 1.5rem; width: 95%; }
         }
     </style>
 </head>
@@ -604,20 +636,25 @@
                         let semester = "Unknown Semester";
                         let period = "Unknown Period";
 
+                        // Intelligent field extraction
                         for (let i = 0; i < items.length; i++) {
-                            const item = items[i];
-                            if (item === 'Program Name' || item === 'Program Name:') {
-                                if (items[i+1]) {
-                                    if (items[i+1].startsWith('From') && items[i+2]) {
-                                        program = items[i+2];
-                                        let pStr = items[i+1].replace('From', '').trim();
-                                        let pParts = pStr.split('to');
-                                        if(pParts.length === 2) period = `${parseDateString(pParts[0])} to ${parseDateString(pParts[1])}`;
-                                    } else {
-                                        program = items[i+1];
+                            const item = items[i].trim();
+                            
+                            // Improved Program Name Extraction
+                            if (item === 'Program Name' || item === 'Program Name:' || item === 'Programme Name') {
+                                // Scan up to 4 items ahead to bypass any stray colons or unexpected line breaks
+                                for(let j=1; j<=4; j++) {
+                                    const nextItem = items[i+j];
+                                    if(nextItem && nextItem !== ':' && !nextItem.startsWith('From') && !nextItem.includes('Semester')) {
+                                        program = nextItem;
+                                        break;
                                     }
                                 }
+                            } else if (item.startsWith('Program Name:') && item.length > 13) {
+                                program = item.substring(13).trim();
                             }
+
+                            // Semester & Year
                             if (item.includes('Semester')) {
                                 let parts = item.split(',');
                                 if (parts.length >= 2) {
@@ -627,6 +664,8 @@
                                     semester = item;
                                 }
                             }
+
+                            // Period Extraction (Fallback if not caught)
                             if (item.startsWith('From ') && item.includes(' to ')) {
                                 let pStr = item.replace('From', '').trim();
                                 let pParts = pStr.split('to');
