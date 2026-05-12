@@ -8,21 +8,19 @@
     <title>NM Attendance | Mithibai, NMIMS, UPG | SVKM Attendance Portal</title>
     <meta name="description" content="The smartest attendance tracker for SVKM students (NM College, Mithibai, UPG). Sync your student portal PDF for NMIMS and SVKM attendance analytics.">
     <meta name="keywords" content="SVKM Attendance, Mithibai Attendance, NM Attendance, UPG Attendance, NMIMS Attendance, SVKM Student Portal, SVKM PDF Tracker">
-    <meta name="keywords" content="nmims, narsee monjee, nm college, nm sap portal, svkm, svkm sap portal, svkm sap netweaver portal, svkm attendance portal, svkm student portal, nm attendance, nm attendance portal, sap portal svkm, nmims attendance portal, mithibai, nm college attendance" />
     
     <!-- Open Graph / WhatsApp Link Previews -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nm-attendify.vercel.app/">
     <meta property="og:title" content="NM Attendance Portal | Smart Attendance Tracker">
     <meta property="og:description" content="Calculate exactly how many lectures you can miss. Upload your SVKM portal PDF to get smart attendance analytics instantly.">
-    <meta property="og:image" content="https://nm-attendify.vercel.app/og-image.jpg">
     
     <!-- PWA & Mobile Optimization -->
     <link rel="icon" href="/icon-512.png?v=2" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1D9BF0" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#7c3aed" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0B0A15" media="(prefers-color-scheme: dark)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NM-Attendify">
@@ -36,149 +34,157 @@
       gtag('config', 'G-C1DYR0ESM3');
     </script>
 
-    <!-- Vercel Speed Insights -->
-    <script>
-      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
-
-    <!-- Vercel Web Analytics -->
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/analytics/script.js"></script>
-
     <!-- External Tools -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- Fonts -->
+    <!-- Fonts: Inter for UI, Satoshi for Logo & Headings -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* --- THEME VARIABLES --- */
+        /* --- MODERN SAAS THEME VARIABLES --- */
         :root {
-            --primary: #1D9BF0; --primary-dark: #0C7ABF; 
-            --success: #10B981; --warning: #F59E0B; --danger: #EF4444; 
+            --primary: #7c3aed; 
+            --primary-dark: #6d28d9; 
+            --success: #10B981; 
+            --warning: #F59E0B; 
+            --danger: #EF4444; 
             
-            --bg-base: #F8FAFC; 
-            --glass-bg: rgba(255, 255, 255, 0.85); 
-            --glass-bg-hover: rgba(255, 255, 255, 1);
-            --glass-border: rgba(0, 0, 0, 0.05); 
-            --glass-border-light: rgba(0, 0, 0, 0.08);
-            --glass-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-            --glass-shadow-hover: 0 12px 32px -8px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 1);
+            --bg-base: #faf7ff; 
+            --glass-bg: rgba(255, 255, 255, 0.72); 
+            --glass-bg-hover: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.8); 
+            --glass-border-light: rgba(255, 255, 255, 1);
+            --glass-shadow: 0 20px 60px rgba(124, 58, 237, 0.12), 0 8px 30px rgba(0,0,0,0.06);
+            --glass-shadow-hover: 0 30px 80px rgba(124, 58, 237, 0.18), 0 12px 40px rgba(0,0,0,0.08);
             
-            --text-primary: #0F172A; --text-secondary: #475569; --text-tertiary: #94A3B8;
-            --gradient-1: rgba(29, 155, 240, 0.08); --gradient-2: rgba(139, 92, 246, 0.05);
+            --text-primary: #0f172a; 
+            --text-secondary: #475569; 
+            --text-tertiary: #64748b;
             
-            --badge-good-bg: #D1FAE5; --badge-good-text: #059669;
-            --badge-warn-bg: #FEF3C7; --badge-warn-text: #D97706;
-            --badge-danger-bg: #FEE2E2; --badge-danger-text: #DC2626;
-            --leaves-ctrl-bg: rgba(0, 0, 0, 0.04);
+            --badge-good-bg: #dcfce7; --badge-good-text: #166534;
+            --badge-warn-bg: #fef3c7; --badge-warn-text: #b45309;
+            --badge-danger-bg: #fee2e2; --badge-danger-text: #b91c1c;
+            --leaves-ctrl-bg: rgba(124, 58, 237, 0.05);
         }
 
+        /* --- OVERHAULED DARK MODE (Deep Rich Indigo/Purple) --- */
         body.dark-theme {
-            --bg-base: #0B1120; 
-            --glass-bg: rgba(30, 41, 59, 0.7); --glass-bg-hover: rgba(30, 41, 59, 0.9); 
-            --glass-border: rgba(255, 255, 255, 0.06); --glass-border-light: rgba(255, 255, 255, 0.1); 
-            --glass-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05); 
-            --glass-shadow-hover: 0 16px 48px -8px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            --bg-base: #0B0A15; 
+            --glass-bg: rgba(22, 18, 36, 0.7); 
+            --glass-bg-hover: rgba(32, 26, 50, 0.9); 
+            --glass-border: rgba(139, 92, 246, 0.25); 
+            --glass-border-light: rgba(139, 92, 246, 0.4); 
+            --glass-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); 
+            --glass-shadow-hover: 0 30px 80px rgba(139, 92, 246, 0.25), inset 0 1px 1px rgba(255,255,255,0.1);
             
-            --text-primary: #F8FAFC; --text-secondary: #94A3B8; --text-tertiary: #64748B; 
-            --gradient-1: rgba(29, 155, 240, 0.12); --gradient-2: rgba(139, 92, 246, 0.08);
+            --text-primary: #FFFFFF; 
+            --text-secondary: #C4B5FD; 
+            --text-tertiary: #8B5CF6; 
 
-            --badge-good-bg: rgba(16, 185, 129, 0.15); --badge-good-text: #34D399;
-            --badge-warn-bg: rgba(245, 158, 11, 0.15); --badge-warn-text: #FBBF24;
-            --badge-danger-bg: rgba(239, 68, 68, 0.15); --badge-danger-text: #F87171;
-            --leaves-ctrl-bg: rgba(255, 255, 255, 0.05);
+            --badge-good-bg: rgba(16, 185, 129, 0.2); --badge-good-text: #34D399;
+            --badge-warn-bg: rgba(245, 158, 11, 0.2); --badge-warn-text: #FBBF24;
+            --badge-danger-bg: rgba(239, 68, 68, 0.2); --badge-danger-text: #F87171;
+            --leaves-ctrl-bg: rgba(139, 92, 246, 0.12);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-            color: var(--text-primary); min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary); 
+            min-height: 100vh;
             background-color: var(--bg-base);
-            background-image: radial-gradient(at 0% 0%, var(--gradient-1) 0px, transparent 50%), radial-gradient(at 100% 100%, var(--gradient-2) 0px, transparent 50%);
+            background-image:
+                linear-gradient(rgba(124,58,237,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124,58,237,0.05) 1px, transparent 1px),
+                linear-gradient(135deg, #faf7ff 0%, #f3efff 40%, #ede9fe 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
             background-attachment: fixed;
             transition: background-color 0.4s ease, color 0.4s ease;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
+        body.dark-theme {
+            background-image:
+                linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px),
+                linear-gradient(135deg, #0b0a15 0%, #161224 40%, #1b143a 100%);
+        }
+
         #app { display: flex; flex-direction: column; min-height: 100vh; position: relative; }
+
+        .hero-glow {
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            border-radius: 9999px;
+            filter: blur(120px);
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body.dark-theme .hero-glow { opacity: 0.15; filter: blur(140px); }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         /* HEADER */
         header {
-            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--glass-border); padding: 0.8rem 1.5rem;
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 100; transition: all 0.3s ease;
         }
 
-        .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 12px; transition: background 0.2s; margin-left: -12px; }
-        .header-left:hover { background: rgba(128, 128, 128, 0.08); }
+        .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 16px; transition: background 0.2s; margin-left: -12px; }
+        .header-left:hover { background: rgba(124, 58, 237, 0.08); }
+        .verified-logo { width: 32px; height: 32px; flex-shrink: 0; filter: drop-shadow(0 4px 8px rgba(124, 58, 237, 0.3)); margin-top: -2px; }
         
-        .verified-logo { width: 28px; height: 28px; flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(29, 155, 240, 0.3)); margin-top: -2px; }
+        .logo-text h1 { font-family: 'Satoshi', sans-serif; font-size: 20px; font-weight: 900; margin: 0; letter-spacing: -0.05em; color: var(--text-primary); line-height: 1.1; }
+        .logo-text p { font-size: 11px; margin: 0; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Inter', sans-serif; }
         
-        .logo-text h1 { font-size: 19px; font-weight: 800; margin: 0; letter-spacing: -0.5px; color: var(--text-primary); line-height: 1.1; }
-        .logo-text p { font-size: 12px; color: var(--primary); margin: 0; font-weight: 700; letter-spacing: 0px; text-transform: uppercase; }
-        
-        .header-actions { display: flex; gap: 8px; align-items: center; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
 
-        .icon-btn {
-            background: transparent; border: 1px solid var(--glass-border-light);
-            width: 38px; height: 38px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; cursor: pointer;
-            color: var(--text-primary); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 16px;
-            text-decoration: none; position: relative; flex-shrink: 0;
+        /* UPGRADED BUTTONS (Red Log, Green Share) */
+        .hdr-btn {
+            display: none; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 14px; 
+            font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .icon-btn:hover { background: var(--glass-bg-hover); transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .icon-btn:active { transform: scale(0.95); }
+        .hdr-btn:active { transform: scale(0.96); }
         
-        #exportBtn:hover { background: #25D366; color: white; border-color: #25D366; }
+        .btn-log { background: #EF4444; color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        .btn-log:hover { background: #DC2626; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4); }
 
-        .theme-switch { position: relative; display: inline-block; width: 56px; height: 32px; flex-shrink: 0; margin-left: 4px; }
+        .btn-share { background: #10B981; color: #ffffff; border: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .btn-share:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
+
+        .theme-switch { position: relative; display: inline-block; width: 52px; height: 28px; flex-shrink: 0; margin-left: 4px; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
-        .switch-slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--glass-bg); border: 1px solid var(--glass-border-light);
-            border-radius: 32px; transition: .4s; display: flex; align-items: center; justify-content: space-between; padding: 0 6px;
-        }
-        .switch-slider .icon { font-size: 14px; z-index: 1; user-select: none; }
-        .switch-slider:before {
-            position: absolute; content: ""; height: 24px; width: 24px; left: 3px; bottom: 3px;
-            background-color: #fff; border-radius: 50%; transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-        }
+        .switch-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--glass-bg); border: 1px solid var(--glass-border-light); border-radius: 32px; transition: .4s; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; }
+        .switch-slider .icon { font-size: 12px; z-index: 1; user-select: none; }
+        .switch-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: #fff; border-radius: 50%; transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         body.dark-theme .switch-slider:before { background-color: #1E293B; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         input:checked + .switch-slider:before { transform: translateX(24px); }
 
-        .text-btn {
-            background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 700;
-            color: var(--danger); cursor: pointer; display: none; transition: all 0.2s; font-family: inherit;
-        }
-        .text-btn:hover { background: rgba(239, 68, 68, 0.15); transform: translateY(-1px); }
-        .text-btn:active { transform: translateY(1px); }
-
-        .btn-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.2); }
-        .btn-warning:hover { background: rgba(245, 158, 11, 0.15); }
-
-        main { flex: 1; padding: 2.5rem 2rem; max-width: 1200px; width: 100%; margin: 0 auto; }
+        main { flex: 1; padding: 2.5rem 2rem; max-width: 1200px; width: 100%; margin: 0 auto; z-index: 10; position: relative;}
 
         /* GLASSMORPHISM & ANIMATIONS */
         .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border); border-top: 1px solid var(--glass-border-light);
-            border-left: 1px solid var(--glass-border-light); border-radius: 24px; box-shadow: var(--glass-shadow);
+            background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .hover-card:hover { transform: translateY(-3px); box-shadow: var(--glass-shadow-hover); border-color: var(--glass-border-light); z-index: 10; }
+        .hover-card:hover { transform: translateY(-4px); box-shadow: var(--glass-shadow-hover); border-color: var(--glass-border-light); z-index: 10; }
 
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .stagger-1 { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
@@ -187,353 +193,349 @@
         .stagger-4 { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
 
         /* UPLOAD SCREEN */
-        .upload-view { display: flex; flex-direction: column; gap: 2rem; max-width: 540px; margin: 2rem auto 0; }
+        .upload-view { display: flex; flex-direction: column; gap: 2rem; max-width: 580px; margin: 2rem auto 0; }
         .upload-header { text-align: center; }
-        .upload-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .upload-header p { color: var(--text-secondary); font-size: 15px; }
+        .upload-header h2 { font-size: 38px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.04em; line-height: 1.1; font-family: 'Satoshi', sans-serif;}
+        .upload-header p { color: var(--text-secondary); font-size: 16px; font-weight: 500; }
 
         .loading-overlay { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 4rem; text-align: center; gap: 16px; }
         .spinner { width: 44px; height: 44px; border: 4px solid var(--glass-border-light); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .portal-link-btn { display: block; width: 100%; background: rgba(29, 155, 240, 0.1); border: 1px solid rgba(29, 155, 240, 0.2); color: var(--primary); text-align: center; padding: 14px 20px; border-radius: 14px; text-decoration: none; font-weight: 700; transition: all 0.2s; }
-        .portal-link-btn:hover { background: rgba(29, 155, 240, 0.15); transform: translateY(-2px); }
+        .btn-group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .action-btn { display: block; width: 100%; text-align: center; padding: 14px 20px; border-radius: 16px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.2s; cursor: pointer; border: none; font-family: inherit;}
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 8px 20px rgba(124,58,237,0.25); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(124,58,237,0.35); }
+        .btn-secondary { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); }
+        .btn-secondary:hover { background: var(--glass-bg-hover); transform: translateY(-2px); border-color: var(--primary); color: var(--primary); }
 
         .upload-spacing-wrapper { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 1.5rem; }
-        #uploadZone { padding: 4rem 2rem; text-align: center; cursor: pointer; border: 2px dashed var(--glass-border-light); transition: all 0.3s ease; }
-        #uploadZone:hover { background: var(--leaves-ctrl-bg); border-color: var(--primary); transform: scale(1.01); }
+        #uploadZone { padding: 4rem 2rem; text-align: center; cursor: pointer; border: 2px dashed rgba(124,58,237,0.3); transition: all 0.3s ease; background: var(--glass-bg); }
+        #uploadZone:hover { background: rgba(124,58,237,0.04); border-color: var(--primary); transform: scale(1.02); }
         .upload-icon { font-size: 48px; margin-bottom: 16px; transition: transform 0.3s; }
         #uploadZone:hover .upload-icon { transform: translateY(-5px); }
-        .upload-text-main { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-        .upload-text-sub { font-size: 13px; color: var(--text-secondary); }
+        .upload-text-main { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+        .upload-text-sub { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
         #fileInput { display: none; }
 
         .info-box { padding: 1.5rem; border-left: 4px solid var(--primary); }
-        .info-box-title { font-weight: 600; margin-bottom: 12px; display: flex; gap: 8px; }
-        .info-box ol { margin: 0; padding-left: 24px; font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+        .info-box-title { font-weight: 700; margin-bottom: 12px; display: flex; gap: 8px; font-size: 15px; }
+        .info-box ol { margin: 0; padding-left: 24px; font-size: 14px; font-weight: 500; color: var(--text-secondary); line-height: 1.8; }
 
         /* APP INSTALL BANNER */
         .install-banner {
             display: none; align-items: center; justify-content: space-between; gap: 16px;
-            padding: 16px; background: var(--glass-bg); border: 2px solid var(--primary);
-            border-radius: 16px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(29, 155, 240, 0.15);
-            margin-bottom: 1.5rem;
+            padding: 16px 20px; background: var(--glass-bg); border: 2px solid var(--primary);
+            border-radius: 20px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 12px 30px rgba(124, 58, 237, 0.2);
+            margin-bottom: 0; /* Handled by wrapper gap */
         }
         .install-banner:hover { transform: translateY(-3px); }
-        .install-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; pointer-events: none; flex-shrink: 0; }
-        
-        .ios-hint { display: none; font-size: 12px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; text-align: left; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem; }
+        .install-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 13px; pointer-events: none; flex-shrink: 0; cursor: pointer;}
+        .ios-hint { display: none; font-size: 13px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; text-align: left; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0; font-weight: 500;}
 
         /* DASHBOARD SCREEN */
         .dashboard-view { display: none; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
-        .stat-card { padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .stat-label { font-size: 12px; color: var(--text-secondary); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-value { font-size: 38px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -1px; line-height: 1; }
-        .val-primary { color: var(--primary); text-shadow: 0 4px 12px rgba(29, 155, 240, 0.2); }
-        .val-success { color: var(--success); text-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-        .val-danger { color: var(--danger); text-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
-        .stat-meta { font-size: 13px; color: var(--text-tertiary); font-weight: 600; }
+        .session-hero { margin-bottom: 2rem; display: flex; flex-direction: column; gap: 8px; }
+        .session-hero h2 { font-family: 'Satoshi', sans-serif; font-size: 36px; font-weight: 900; letter-spacing: -0.04em; margin-bottom: 4px; line-height: 1.2; }
+        .session-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .session-badge { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; color: var(--text-secondary); box-shadow: 0 4px 12px rgba(0,0,0,0.03); backdrop-filter: blur(12px); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 2rem; }
         
-        /* The "Data as of" line OUTSIDE the cards */
-        .last-updated-out { 
-            text-align: right; font-size: 13px; color: var(--text-tertiary); 
-            margin-bottom: 12px; font-weight: 600; display: none; padding-right: 4px;
+        /* ALIGNMENT: SPLIT GRID FOR DESKTOP (Danger Zone left, Controls right) */
+        .split-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 2rem; }
+        .side-by-side { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 1024px) {
+            .split-grid { grid-template-columns: 1fr 2fr; }
+            .side-by-side { grid-template-columns: 1fr 1fr; }
         }
-
-        /* Bottom Session Info (1 Line) */
-        .session-info { margin-top: 2.5rem; padding: 1.5rem; margin-bottom: 2rem;}
-        .session-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: flex-start; }
-        .session-item { display: flex; flex-direction: column; gap: 4px; }
-        .session-item span:first-child { color: var(--text-tertiary); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; }
-        .session-item span:last-child { font-weight: 700; color: var(--text-primary); font-size: 14px; word-break: break-word; line-height: 1.4; }
-
-        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 1.5rem; }
-        .control-card { padding: 1.5rem; }
-        .control-header { font-weight: 800; font-size: 16px; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 10px; letter-spacing: -0.3px; }
-
-        .control-input-group { display: flex; align-items: baseline; gap: 10px; margin-bottom: 1.25rem; }
-        input[type="number"] {
-            width: 76px; font-size: 22px; font-weight: 800; padding: 6px 10px;
-            border: 1px solid var(--glass-border-light); border-radius: 10px; font-family: inherit;
-            background: var(--leaves-ctrl-bg); color: var(--text-primary); transition: all 0.2s ease;
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .side-by-side { grid-template-columns: 1fr 1fr; }
         }
-        input[type="number"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.15); }
-
-        input[type="range"] {
-            width: 100%; height: 8px; border-radius: 4px;
-            background: var(--glass-border-light); outline: none; -webkit-appearance: none; margin-bottom: 1.5rem;
-            touch-action: pan-x; 
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
-            background: var(--primary); cursor: pointer; border: 4px solid #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: transform 0.1s;
-        }
-        input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
-        body.dark-theme input[type="range"]::-webkit-slider-thumb { border-color: var(--bg-base); }
-
-        .requirement-box { padding: 14px; background: var(--leaves-ctrl-bg); border-radius: 12px; font-size: 13px; color: var(--text-secondary); line-height: 1.5; border: 1px solid var(--glass-border); }
-        .requirement-box strong { color: var(--text-primary); font-weight: 800; font-size: 14px; }
-
-        .forecast-group { display: flex; gap: 8px; align-items: center; margin-bottom: 1.25rem; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; font-weight: 600; }
-        .forecast-group input { padding: 4px 8px; width: 56px; font-size: 15px; border-radius: 8px; border: 1px solid var(--glass-border-light); background: var(--leaves-ctrl-bg); color: var(--text-primary); }
         
-        .forecast-results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .forecast-result { padding: 14px; border-radius: 12px; text-align: center; border: 1px solid var(--glass-border); background: var(--leaves-ctrl-bg); }
-        .forecast-attend { border-color: rgba(16, 185, 129, 0.2); }
-        .forecast-miss { border-color: rgba(239, 68, 68, 0.2); }
-        .forecast-result-label { font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-secondary); text-transform: uppercase; }
-        .forecast-result-value { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+        .stat-card { padding: 1.75rem; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .stat-label { font-size: 13px; color: var(--text-secondary); font-weight: 800; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 44px; font-weight: 900; color: var(--text-primary); margin-bottom: 6px; letter-spacing: -0.04em; line-height: 1; font-family: 'Satoshi', sans-serif;}
+        
+        .val-primary { color: var(--primary); text-shadow: 0 8px 24px rgba(124, 58, 237, 0.25); }
+        .val-success { color: var(--success); text-shadow: 0 8px 24px rgba(16, 185, 129, 0.25); }
+        .val-danger { color: var(--danger); text-shadow: 0 8px 24px rgba(239, 68, 68, 0.25); }
+        .stat-meta { font-size: 14px; color: var(--text-tertiary); font-weight: 600; }
+
+        /* ADVANCED ANALYTICS CARDS */
+        .adv-card { padding: 1.75rem; height: 100%; display: flex; flex-direction: column;}
+        .adv-header { font-weight: 800; font-size: 18px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; letter-spacing: -0.02em; }
+        
+        .danger-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--glass-border-light); }
+        .danger-item:last-child { border-bottom: none; }
+        .danger-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+        .danger-sub { font-size: 12px; color: var(--danger); font-weight: 700; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px; }
+
+        /* FORECAST & PLANNER ALIGNMENT */
+        .forecast-header-row { display: flex; align-items: center; justify-content: space-between; background: var(--leaves-ctrl-bg); padding: 10px 14px; border-radius: 14px; margin-bottom: 16px; border: 1px solid var(--glass-border); }
+        .forecast-header-row span { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+        .forecast-header-row input { width: 48px; text-align: center; font-size: 16px; font-weight: 800; border-radius: 8px; border: 1px solid var(--glass-border-light); padding: 4px; color: var(--text-primary); background: var(--glass-bg); }
+        .forecast-results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+        .forecast-result { padding: 16px; border-radius: 16px; text-align: center; border: 1px solid var(--glass-border); background: var(--leaves-ctrl-bg); display: flex; flex-direction: column; justify-content: center;}
+        .forecast-attend { border-color: rgba(16, 185, 129, 0.3); }
+        .forecast-miss { border-color: rgba(239, 68, 68, 0.3); }
+        .forecast-result-label { font-size: 12px; font-weight: 800; margin-bottom: 6px; color: var(--text-secondary); text-transform: uppercase; }
+        .forecast-result-value { font-family: 'Satoshi', sans-serif; font-size: 26px; font-weight: 900; letter-spacing: -0.04em; }
         .forecast-attend .forecast-result-value { color: var(--success); }
         .forecast-miss .forecast-result-value { color: var(--danger); }
 
-        .chart-container { width: 100%; height: 280px; padding: 1.5rem; margin-bottom: 2rem; position: relative; }
-        .chart-header { font-size: 16px; font-weight: 800; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
-
-        /* Subjects */
-        .section-header { margin-bottom: 1.5rem; padding: 0 0.5rem; }
-        .section-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; }
-        .section-subtitle { font-size: 14px; color: var(--text-secondary); line-height: 1.4; }
-
-        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-        .subject-card { padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+        /* TARGET PLANNER */
+        .control-input-group { display: flex; align-items: baseline; gap: 10px; margin-bottom: 1.5rem; }
+        input[type="number"].target-inp { width: 84px; font-size: 24px; font-weight: 800; padding: 8px 12px; border: 1px solid var(--glass-border-light); border-radius: 12px; font-family: inherit; background: var(--leaves-ctrl-bg); color: var(--text-primary); transition: all 0.2s ease; }
+        input[type="number"].target-inp:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15); }
+        input[type="range"] { width: 100%; height: 10px; border-radius: 5px; background: var(--leaves-ctrl-bg); border: 1px solid var(--glass-border-light); outline: none; -webkit-appearance: none; margin-bottom: 1.75rem; touch-action: pan-x; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: var(--primary); cursor: pointer; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.1s; }
+        input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
+        body.dark-theme input[type="range"]::-webkit-slider-thumb { border-color: var(--glass-bg); }
         
-        .subject-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 12px; }
-        .subject-name { font-weight: 700; font-size: 14px; line-height: 1.4; color: var(--text-primary); }
+        .requirement-box { padding: 16px; background: var(--leaves-ctrl-bg); border-radius: 16px; font-size: 14px; color: var(--text-secondary); line-height: 1.6; border: 1px solid var(--glass-border); font-weight: 500; flex: 1; display: flex; align-items: center;}
+        .requirement-box strong { color: var(--text-primary); font-weight: 800; font-size: 15px; }
 
+        /* FORECAST PRO BUTTON */
+        .pro-badge-btn {
+            background: linear-gradient(135deg, #7c3aed, #c084fc);
+            color: white; border: none; padding: 6px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 900; cursor: pointer; position: relative;
+            overflow: hidden; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s; font-family: 'Inter', sans-serif;
+            display: flex; align-items: center; gap: 4px; letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .pro-badge-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(124, 58, 237, 0.6); }
+        .pro-badge-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine { 0% { left: -100%; } 15% { left: 200%; } 100% { left: 200%; } }
+
+        /* REFINED MONTHLY HEATMAP */
+        .heatmap-container { padding: 1.75rem; margin-bottom: 2rem; }
+        .heatmap-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px;}
+        .heatmap-title { font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 10px; letter-spacing: -0.02em; }
+        .heatmap-controls { display: flex; align-items: center; gap: 12px; background: var(--leaves-ctrl-bg); padding: 6px 12px; border-radius: 16px; border: 1px solid var(--glass-border-light); }
+        .heatmap-btn { background: transparent; border: none; font-size: 16px; font-weight: bold; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 6px; transition: background 0.2s;}
+        .heatmap-btn:hover { background: rgba(124, 58, 237, 0.1); color: var(--primary); }
+        .heatmap-month-label { font-size: 14px; font-weight: 800; min-width: 100px; text-align: center; }
+        
+        /* Contrained Heatmap Wrapper for smaller view */
+        .heatmap-wrapper { max-width: 360px; margin: 0 auto; }
+        .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .heatmap-day-label { text-align: center; font-size: 11px; font-weight: 800; color: var(--text-tertiary); margin-bottom: 4px; }
+        .heatmap-cell { aspect-ratio: 1; border-radius: 8px; background: var(--glass-border-light); position: relative; cursor: pointer; transition: transform 0.2s; }
+        .heatmap-cell:hover { transform: scale(1.15); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .heatmap-cell.empty { background: transparent; cursor: default; box-shadow: none; border: none; }
+        .heatmap-cell.empty:hover { transform: none; }
+        .cell-0 { background: var(--glass-border-light); } /* No classes / weekend */
+        .cell-future { background: transparent; border: 1px dashed var(--glass-border-light); }
+        .cell-1 { background: rgba(239,68,68,0.8); } /* Bunked all */
+        .cell-2 { background: rgba(16,185,129,0.4); } /* Attended some */
+        .cell-3 { background: rgba(16,185,129,0.9); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); } /* Attended all */
+        
+        .heatmap-tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: var(--text-primary); color: var(--bg-base); padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 8px; pointer-events: none; opacity: 0; transition: opacity 0.2s; white-space: nowrap; z-index: 20; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .heatmap-cell:hover .heatmap-tooltip { opacity: 1; }
+
+        /* SECTION HEADERS & CHART */
+        .chart-container { width: 100%; padding: 2rem; margin-bottom: 2.5rem; position: relative; }
+        .chart-wrapper { position: relative; height: 320px; width: 100%; margin-top: 0.5rem;}
+        
+        .section-header { margin-bottom: 1.5rem; padding: 0 0.5rem; margin-top: 2rem;}
+        .section-title { font-family: 'Satoshi', sans-serif; font-size: 26px; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.04em; }
+        .section-subtitle { font-size: 15px; font-weight: 500; color: var(--text-secondary); line-height: 1.5; }
+        
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-bottom: 2rem; }
+        .subject-card { padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; }
+        .subject-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; }
+        .subject-name { font-weight: 700; font-size: 15px; line-height: 1.4; color: var(--text-primary); }
+        
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; border: none !important; }
         .status-good { background: var(--badge-good-bg); color: var(--badge-good-text); }
         .status-warning { background: var(--badge-warn-bg); color: var(--badge-warn-text); }
         .status-danger { background: var(--badge-danger-bg); color: var(--badge-danger-text); }
 
-        .progress-bar { background: var(--glass-border-light); height: 8px; border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
-        .progress-fill { height: 100%; border-radius: 6px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .bg-good { background-color: var(--success); }
-        .bg-warn { background-color: var(--warning); }
-        .bg-danger { background-color: var(--danger); }
+        .progress-bar { background: var(--glass-border-light); height: 10px; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+        .progress-fill { height: 100%; border-radius: 8px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bg-good { background-color: var(--success); box-shadow: 0 0 10px rgba(16,185,129,0.4); }
+        .bg-warn { background-color: var(--warning); box-shadow: 0 0 10px rgba(245,158,11,0.4); }
+        .bg-danger { background-color: var(--danger); box-shadow: 0 0 10px rgba(239,68,68,0.4); }
 
-        .subject-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); align-items: center; font-weight: 600; }
+        .subject-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary); align-items: center; font-weight: 600; }
+        .leaves-control { display: flex; align-items: center; gap: 12px; background: var(--leaves-ctrl-bg); padding: 6px 14px; border-radius: 20px; border: none; flex-shrink: 0; }
+        .ag-label { font-size: 13px; font-weight: 900; color: var(--text-tertiary); }
+        .leave-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-primary); cursor: pointer; font-size: 16px; font-weight: 800; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; }
+        .leave-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .leaves-control { display: flex; align-items: center; gap: 10px; background: var(--leaves-ctrl-bg); padding: 4px 12px; border-radius: 20px; border: none; flex-shrink: 0; }
-        .ag-label { font-size: 12px; font-weight: 800; color: var(--text-tertiary); }
-        .leave-btn { background: transparent; border: none; color: var(--text-primary); cursor: pointer; font-size: 16px; font-weight: bold; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; font-family: inherit; line-height: 1; padding-bottom: 2px; }
-        .leave-btn:hover { background: rgba(128, 128, 128, 0.15); }
-        .leave-btn:active { transform: scale(0.9); }
-        .leave-count { font-weight: 800; color: var(--primary); font-size: 13px; min-width: 14px; text-align: center; }
+        /* FOOTER & EXTRAS */
+        .landing-extras { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+        .faq-item { border-bottom: 1px solid var(--glass-border-light); padding: 16px 0; }
+        .faq-item summary { font-weight: 700; cursor: pointer; padding: 6px 0; color: var(--text-primary); display: flex; justify-content: space-between; align-items: center; }
+        .faq-item p { margin-top: 12px; color: var(--text-secondary); font-size: 14px; line-height: 1.6; font-weight: 500; }
+        .last-updated-out { text-align: right; font-size: 13px; color: var(--text-tertiary); margin-bottom: 16px; font-weight: 600; display: none; padding-right: 8px; }
 
-        /* Toast Notifications */
+        /* POPUPS & TOASTS */
         .toast-container { position: fixed; top: 80px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
-        .toast { background: var(--bg-base); border: 1px solid var(--glass-border); border-left: 4px solid var(--danger); color: var(--text-primary); padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; gap: 16px; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; font-family: inherit; }
-        body.dark-theme .toast { box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .toast { background: var(--bg-base); border: 1px solid var(--glass-border); border-left: 4px solid var(--danger); color: var(--text-primary); padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; gap: 16px; transform: translateX(120%); transition: transform 0.4s; pointer-events: auto; font-family: inherit; }
         .toast.show { transform: translateX(0); }
-        .toast-close { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 18px; padding: 4px; }
-        .toast-close:hover { color: var(--text-primary); }
-
-        /* MODALS & POPUPS */
-        .share-popup {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: all 0.3s ease;
-        }
+        
+        .share-popup { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
         .share-popup.show { opacity: 1; pointer-events: auto; }
-        .share-popup-content {
-            padding: 2.5rem; max-width: 380px; width: 90%; text-align: center;
-            position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: var(--bg-base); border: 1px solid var(--glass-border-light); border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
+        .share-popup-content { padding: 3rem 2.5rem; max-width: 400px; width: 90%; text-align: center; position: relative; transform: translateY(20px) scale(0.95); transition: transform 0.4s; background: var(--bg-base); border-radius: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);}
         .share-popup.show .share-popup-content { transform: translateY(0) scale(1); }
-        .close-popup {
-            position: absolute; top: 16px; right: 16px; background: var(--leaves-ctrl-bg);
-            border: none; color: var(--text-secondary); cursor: pointer; font-size: 16px;
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-        }
-        .close-popup:hover { background: rgba(128,128,128,0.2); color: var(--text-primary); }
-        .whatsapp-btn {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            background: #25D366; color: white; padding: 14px 20px; border-radius: 14px;
-            text-decoration: none; font-weight: 800; transition: transform 0.2s; font-size: 15px; margin-top: 20px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            border: none; width: 100%; cursor: pointer;
-        }
-        .whatsapp-btn:hover { transform: translateY(-2px); }
-
+        .close-popup { position: absolute; top: 20px; right: 20px; background: var(--leaves-ctrl-bg); border: none; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s; color: var(--text-secondary); font-size: 16px;}
+        .close-popup:hover { background: rgba(124,58,237,0.15); color: var(--primary); }
+        
         /* Absent Log Styles */
-        .absent-list { overflow-y: auto; text-align: left; margin-top: 1rem; padding-right: 8px; max-height: 50vh; margin-bottom: 10px; }
-        .absent-item { padding: 12px 0; border-bottom: 1px solid var(--glass-border-light); display: flex; flex-direction: column; gap: 6px; }
+        .absent-list { overflow-y: auto; text-align: left; margin-top: 1.5rem; padding-right: 8px; max-height: 50vh; margin-bottom: 12px; }
+        .absent-item { padding: 14px 0; border-bottom: 1px solid var(--glass-border-light); display: flex; flex-direction: column; gap: 8px; }
         .absent-item:last-child { border-bottom: none; }
-        .absent-course { font-weight: 700; font-size: 14px; color: var(--text-primary); line-height: 1.3; }
-        .absent-date { font-size: 12px; color: var(--danger); font-weight: 700; align-self: flex-start; background: rgba(239, 68, 68, 0.1); padding: 4px 8px; border-radius: 6px; }
+        .absent-course { font-weight: 800; font-size: 15px; color: var(--text-primary); line-height: 1.3; }
+        .absent-date { font-size: 13px; color: var(--danger); font-weight: 800; align-self: flex-start; background: rgba(239, 68, 68, 0.1); padding: 4px 10px; border-radius: 8px; }
+        
+        .whatsapp-share-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #25D366; color: white; padding: 14px 20px; border-radius: 14px;
+            text-decoration: none; font-weight: 800; transition: all 0.2s; font-size: 15px; margin-top: 16px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3); border: none; cursor: pointer; font-family: inherit; width: 100%;
+        }
+        .whatsapp-share-btn:hover { background: #22c55e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
 
         /* STRICT MOBILE RESPONSIVENESS */
         @media (max-width: 768px) {
-            main { padding: 1rem; }
-            header { padding: 0.75rem 1rem; }
-            .logo-text h1 { font-size: 17px; }
-            .logo-text p { font-size: 10px; }
-            .verified-logo { width: 24px; height: 24px; }
-            
-            .header-actions { gap: 8px; }
-            .icon-btn { width: 34px; height: 34px; font-size: 14px; }
-            .text-btn { padding: 8px 12px; font-size: 12px; }
-            .theme-switch { width: 46px; height: 26px; }
-            .switch-slider:before { height: 18px; width: 18px; bottom: 3px; }
-            input:checked + .switch-slider:before { transform: translateX(20px); }
-            
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.25rem; }
-            .stat-card { padding: 1.25rem 1rem; }
-            .stat-value { font-size: 28px; }
-            .stat-label { font-size: 10px; }
-            .stat-meta { font-size: 11px; }
-            .last-updated-out { text-align: center; margin-bottom: 16px; }
-
-            .session-info { padding: 1.25rem; margin-top: 2rem; margin-bottom: 1rem; }
-            .session-grid { flex-direction: column; gap: 14px; } 
-            .session-item { min-width: 100%; }
-
-            .controls-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 1.25rem; }
-            .control-card { padding: 1.25rem; }
-            .control-header { font-size: 15px; margin-bottom: 1rem; }
-            .forecast-results { grid-template-columns: 1fr; gap: 8px; }
-
-            .chart-container { padding: 1.25rem 1rem; height: 240px; margin-bottom: 1.5rem; }
-            
-            .subjects-grid { grid-template-columns: 1fr; gap: 12px; }
-            .subject-card { padding: 1.25rem; }
-            .subject-name { font-size: 13px; }
-            .subject-meta { font-size: 12px; }
-            
-            #uploadZone { padding: 3rem 1rem; }
-            .upload-icon { font-size: 40px; }
-            .upload-header h2 { font-size: 26px; }
-            
-            .toast-container { top: 70px; right: 12px; left: 12px; }
-            .share-popup-content { padding: 2rem 1.5rem; }
-        }
-        @media (max-width: 480px) {
-            .session-grid { grid-template-columns: 1fr; gap: 12px; } /* Single column for very small screens */
+            main { padding: 1.5rem 1rem; }
+            header { padding: 1rem; }
+            .logo-text h1 { font-size: 18px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .stat-value { font-size: 32px; }
+            .stat-label { font-size: 11px; }
+            .btn-group-row { grid-template-columns: 1fr; }
+            .chart-wrapper { height: 260px; }
+            .chart-container { padding: 1.5rem 1rem; margin-bottom: 2rem;}
+            .section-header { margin-top: 1rem; }
+            .section-title { font-size: 22px; }
+            #uploadZone { padding: 3rem 1.5rem; }
+            .upload-header h2 { font-size: 30px; }
+            .session-hero h2 { font-size: 28px; }
+            .hdr-btn { padding: 6px 12px; font-size: 12px; }
+            .split-grid { gap: 16px; }
+            .side-by-side { gap: 16px; }
         }
     </style>
 </head>
 <body>
+
     <div id="app">
+        <div class="hero-glow" style="background: #8b5cf6; top: -250px; right: -150px;"></div>
+        <div class="hero-glow" style="background: #fde047; bottom: -300px; left: -200px;"></div>
+
         <div id="toastContainer" class="toast-container"></div>
 
         <!-- SHARE POPUP -->
         <div id="sharePopup" class="share-popup">
-            <div class="share-popup-content">
+            <div class="share-popup-content glass-panel">
                 <button class="close-popup" onclick="document.getElementById('sharePopup').classList.remove('show'); localStorage.setItem('nmat_popup_shown', 'true');">✕</button>
-                <div style="font-size: 44px; margin-bottom: 12px;">👋</div>
-                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;">Welcome to NM Attendify!</h3>
-                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;">This tool works best when shared with friends.</p>
-                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">If it helped you, share it on WhatsApp!</p>
-                <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20smart%20attendance%20tracker%20for%20SVKM%20students!%20https://nm-attendify.vercel.app" target="_blank" class="whatsapp-btn" onclick="document.getElementById('sharePopup').classList.remove('show'); localStorage.setItem('nmat_popup_shown', 'true');">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                    </svg> Share on WhatsApp
-                </a>
+                <div style="font-size: 44px; margin-bottom: 16px;">👋</div>
+                <h3 style="font-family: 'Satoshi', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 8px; letter-spacing: -0.04em;">Welcome to NM Attendify!</h3>
+                <p style="font-size: 15px; color: var(--text-secondary); font-weight: 500; line-height: 1.5; margin-bottom: 16px;">This tool works best when shared with friends. Flex your attendance or send an SOS.</p>
+                <button id="modalShareBtn" class="whatsapp-share-btn" onclick="document.getElementById('sharePopup').classList.remove('show'); localStorage.setItem('nmat_popup_shown', 'true'); document.getElementById('exportBtn').click();">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Share Stats on WhatsApp
+                </button>
             </div>
         </div>
 
         <!-- ABSENT LOG POPUP -->
         <div id="absentLogPopup" class="share-popup">
-            <div class="share-popup-content" style="display: flex; flex-direction: column;">
+            <div class="share-popup-content glass-panel" style="display: flex; flex-direction: column;">
                 <button class="close-popup" onclick="document.getElementById('absentLogPopup').classList.remove('show')">✕</button>
-                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px; text-align: left;">Absent Log</h3>
-                <p style="font-size: 13px; color: var(--text-secondary); text-align: left; margin-bottom: 8px;">History of missed lectures from your PDF.</p>
+                <h3 style="font-family: 'Satoshi', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 8px; text-align: left; letter-spacing: -0.04em;">Absent Log</h3>
+                <p style="font-size: 14px; font-weight: 500; color: var(--text-secondary); text-align: left; margin-bottom: 12px;">History of missed lectures from your PDF.</p>
                 <div id="absentLogList" class="absent-list">
                     <!-- Javascript injects absent items here -->
                 </div>
-                <!-- Absent Log Share Button -->
-                <button id="shareAbsentLogBtn" class="whatsapp-btn" style="margin-top: 10px;">
+                <button id="shareAbsentLogBtn" class="whatsapp-share-btn">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                    </svg> Share List
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Share Absent Log
                 </button>
             </div>
         </div>
 
         <header>
             <div class="header-left" onclick="resetToUpload()" title="Go Home">
-                <svg class="verified-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 1.25L14.75 3.19l3.19-.53l1.19 3.03l3.03 1.19l-.53 3.19L23.75 12l-1.94 2.75l.53 3.19l-3.03 1.19l-1.19 3.03l-3.19-.53L12 22.75L9.25 20.81l-3.19.53l-1.19-3.03l-3.03-1.19l.53-3.19L1.25 12l1.94-2.75l-.53-3.19l3.03-1.19l1.19-3.03l3.19.53L12 1.25Z" fill="#1D9BF0"/>
-                    <path d="M10.5 16.5c-.2 0-.39-.08-.53-.22l-3-3c-.29-.29-.29-.77 0-1.06c.29-.29.77-.29 1.06 0l2.47 2.47l6.47-6.47c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06l-7 7c-.14.14-.33.22-.53.22Z" fill="#FFFFFF"/>
-                </svg>
+                <svg class="verified-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.25L14.75 3.19l3.19-.53l1.19 3.03l3.03 1.19l-.53 3.19L23.75 12l-1.94 2.75l.53 3.19l-3.03 1.19l-1.19 3.03l-3.19-.53L12 22.75L9.25 20.81l-3.19.53l-1.19-3.03l-3.03-1.19l.53-3.19L1.25 12l1.94-2.75l-.53-3.19l3.03-1.19l1.19-3.03l3.19.53L12 1.25Z" fill="#7c3aed"/><path d="M10.5 16.5c-.2 0-.39-.08-.53-.22l-3-3c-.29-.29-.29-.77 0-1.06c.29-.29.77-.29 1.06 0l2.47 2.47l6.47-6.47c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06l-7 7c-.14.14-.33.22-.53.22Z" fill="#FFFFFF"/></svg>
                 <div class="logo-text">
                     <h1>NM Attendify</h1>
-                    <p>Smart Analytics</p>
+                    <p class="gradient-text">Smart Analytics</p>
                 </div>
             </div>
             
             <div class="header-actions">
-                <button id="absentLogBtn" class="text-btn btn-warning" style="display: none;">Absent Log</button>
-                <button id="clearDataBtn" class="text-btn">Clear</button>
-                
-                <button id="exportBtn" class="icon-btn" title="Share via WhatsApp" style="display: none;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                    </svg>
+                <button id="absentLogBtn" class="hdr-btn btn-log">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    Absent Log
+                </button>
+                <button id="exportBtn" class="hdr-btn btn-share">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    <span id="exportBtnText">Share Stats</span>
                 </button>
                 
                 <label class="theme-switch" title="Toggle Theme">
                     <input type="checkbox" id="themeToggleCheckbox">
-                    <div class="switch-slider">
-                        <span class="icon" style="transform: scale(0.9);">☀️</span>
-                        <span class="icon" style="transform: scale(0.9);">🌙</span>
-                    </div>
+                    <div class="switch-slider"><span class="icon">☀️</span><span class="icon">🌙</span></div>
                 </label>
             </div>
         </header>
 
         <main>
+            <!-- UPLOAD VIEW -->
             <div class="upload-view" id="uploadView">
                 <div id="uploadContent" class="stagger-1">
                     
-                    <!-- PWA APP INSTALL BANNER -->
-                    <div id="installAppCard" class="install-banner glass-panel" style="display: flex;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <svg class="verified-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 36px; height: 36px;">
-                                <path d="M12 1.25L14.75 3.19l3.19-.53l1.19 3.03l3.03 1.19l-.53 3.19L23.75 12l-1.94 2.75l.53 3.19l-3.03 1.19l-1.19 3.03l-3.19-.53L12 22.75L9.25 20.81l-3.19.53l-1.19-3.03l-3.03-1.19l.53-3.19L1.25 12l1.94-2.75l-.53-3.19l3.03-1.19l1.19-3.03l3.19.53L12 1.25Z" fill="#1D9BF0"/>
-                                <path d="M10.5 16.5c-.2 0-.39-.08-.53-.22l-3-3c-.29-.29-.29-.77 0-1.06c.29-.29.77-.29 1.06 0l2.47 2.47l6.47-6.47c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06l-7 7c-.14.14-.33.22-.53.22Z" fill="#FFFFFF"/>
-                            </svg>
-                            <div style="text-align: left;">
-                                <div style="font-weight: 800; font-size: 15px;">NM Attendify</div>
-                                <div style="font-size: 12px; color: var(--text-secondary);">Add to Home Screen for quick access</div>
-                            </div>
-                        </div>
-                        <button class="install-btn">Install</button>
-                    </div>
-
-                    <div id="iosInstallHint" class="ios-hint stagger-2">
-                        💡 <strong>iPhone User?</strong> For the best experience, tap the <strong>Share icon</strong> at the bottom of Safari, then select <strong>"Add to Home Screen"</strong> to use NM Attendify as a native app.
-                    </div>
-
                     <div class="upload-header">
-                        <h2>Track Your Attendance</h2>
+                        <h2>Track Your <span class="gradient-text">Attendance</span></h2>
                         <p>Upload your SVKM detailed attendance PDF</p>
                     </div>
 
                     <div class="upload-spacing-wrapper">
-                        <a href="https://sdc-sppap1.svkm.ac.in:50001/irj/portal" target="_blank" class="portal-link-btn glass-panel hover-card">
-                            🌐 Open SVKM Portal
-                        </a>
+
+                        <!-- ADD TO HOME SCREEN / PWA INSTALL BANNER -->
+                        <div id="installBanner" class="install-banner">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 24px;">📱</span>
+                                <div>
+                                    <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">Install NM Attendify</div>
+                                    <div style="font-size: 13px; color: var(--text-secondary); font-weight: 500;">Add to home screen for quick access</div>
+                                </div>
+                            </div>
+                            <button id="installBtn" class="install-btn">Install</button>
+                        </div>
+                        <div id="iosHint" class="ios-hint">
+                            To install on iOS: tap the <strong>Share</strong> icon <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display: inline-block; vertical-align: middle;"><path d="M16 5l-1.42 1.42-1.59-1.59V16h-2V4.83L9.41 6.41 8 5l4-4 4 4zm4 5v11c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V10c0-1.1.9-2 2-2h3v2H6v11h12V10h-3V8h3c1.1 0 2 .9 2 2z"/></svg> at the bottom of Safari, then scroll down and tap <strong>Add to Home Screen</strong>.
+                        </div>
+
+                        <div class="btn-group-row">
+                            <a href="https://sdc-sppap1.svkm.ac.in:50001/irj/portal" target="_blank" class="action-btn btn-primary hover-card">
+                                🌐 Open SVKM Portal
+                            </a>
+                            <button onclick="loadDemoData()" class="action-btn btn-secondary hover-card">
+                                ✨ Try a Demo
+                            </button>
+                        </div>
 
                         <div id="uploadZone" class="glass-panel hover-card">
                             <div class="upload-icon">📄</div>
                             <div class="upload-text-main">Click to upload or drag & drop</div>
                             <div class="upload-text-sub">Supports SVKM Attendance PDFs only</div>
                         </div>
-                        
-                        <!-- Privacy Guarantee -->
-                        <p style="text-align: center; font-size: 13px; color: var(--text-tertiary); font-weight: 600; line-height: 1.4; padding: 0 10px;">
-                            🔒 100% Private. Your PDF is processed locally on your device and is never uploaded to any server.
-                        </p>
+                        <p style="text-align: center; font-size: 14px; color: var(--text-tertiary); font-weight: 600;">🔒 100% Private. Processed locally.</p>
                     </div>
-                    
                     <input type="file" id="fileInput" accept=".pdf">
 
-                    <div class="info-box glass-panel hover-card" style="margin-top: 0.5rem;">
+                    <div class="info-box glass-panel hover-card" style="margin-top: 1rem;">
                         <div class="info-box-title"><span>ℹ️</span><span>How to get your PDF</span></div>
                         <ol>
                             <li>Click the portal button above to log in</li>
@@ -542,101 +544,196 @@
                             <li>Upload the file into the box above</li>
                         </ol>
                     </div>
+
+                    <!-- Landing Extras -->
+                    <div class="landing-extras stagger-3">
+                        <div class="glass-panel hover-card" style="padding: 1.75rem;">
+                            <h3 style="margin-bottom: 0.75rem; font-family: 'Satoshi', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: -0.02em;">About NM Attendify</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; font-size: 15px; font-weight: 500;">
+                                NM Attendify is a smart, privacy-first attendance calculator explicitly built for students of SVKM institutions (NM College, Mithibai, UPG, NMIMS). It automates the tedious task of manually calculating how many lectures you can safely miss, turning complex PDF data into a clear, interactive dashboard within seconds.
+                            </p>
+                        </div>
+
+                        <div class="glass-panel hover-card" style="padding: 1.75rem;">
+                            <h3 style="margin-bottom: 1.25rem; font-family: 'Satoshi', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: -0.02em;">Frequently Asked Questions</h3>
+                            <div class="faq-list">
+                                <details class="faq-item">
+                                    <summary>Is my PDF data safe?</summary>
+                                    <p>Absolutely. The PDF parsing happens entirely offline on your device using JavaScript. No files, personal details, or attendance records are ever uploaded to any server or database.</p>
+                                </details>
+                                <details class="faq-item">
+                                    <summary>Which colleges are supported?</summary>
+                                    <p>Any SVKM institution that uses the standard SAP NetWeaver portal format for detailed attendance reports. This typically includes NM College, Mithibai, UPG, and NMIMS courses.</p>
+                                </details>
+                                <details class="faq-item">
+                                    <summary>How do I factor in Official Leaves (AG)?</summary>
+                                    <p>Once you upload your PDF and view your dashboard, simply use the <strong>+</strong> and <strong>-</strong> buttons beneath each subject to manually log your approved AGs. The metrics and forecasts will recalculate in real-time.</p>
+                                </details>
+                                <details class="faq-item">
+                                    <summary>How is the "Can Miss" value calculated?</summary>
+                                    <p>It mathematically determines exactly how many consecutive upcoming classes you can safely skip without your percentage dropping strictly below the target percentage you set on the dashboard.</p>
+                                </details>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; padding: 2.5rem 0 1rem; border-top: 1px solid var(--glass-border-light); margin-top: 1rem;">
+                            <p style="font-size: 14px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">
+                                Made with ❤️ for SVKM Students
+                            </p>
+                            <a href="mailto:nmattendify@gmail.com?subject=Feedback/Issue%20with%20NM%20Attendify" style="color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600;">Report an Issue / Feedback</a>
+                            <p style="font-size: 12px; font-weight: 500; color: var(--text-tertiary); margin-top: 12px;">
+                                <a href="javascript:void(0)" style="color: var(--text-tertiary); text-decoration: none;">Privacy Policy</a> &nbsp;|&nbsp; <a href="javascript:void(0)" style="color: var(--text-tertiary); text-decoration: none;">Terms & Conditions</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="loadingOverlay" class="glass-panel loading-overlay stagger-1">
                     <div class="spinner"></div>
-                    <h3 style="font-weight: 800; letter-spacing: -0.5px;">Analyzing PDF...</h3>
-                    <p style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">Extracting subjects, history, and official leaves.</p>
+                    <h3 style="font-size: 24px; font-weight: 800;">Analyzing PDF...</h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; font-weight: 600;">Extracting insights...</p>
                 </div>
             </div>
 
+            <!-- DASHBOARD VIEW -->
             <div class="dashboard-view" id="dashboardView">
+                <div id="lastUpdatedStr" class="last-updated-out"></div>
                 
-                <!-- Display Data As Of clearly outside the main metric card grids for cleaner visual -->
-                <div id="lastUpdatedStr" class="last-updated-out" style="display: block;"></div>
-                
-                <div class="stats-grid stagger-1">
+                <div class="session-hero stagger-1">
+                    <h2>Welcome back, <span id="studentNameHero" class="gradient-text">Student</span>! 🚀</h2>
+                    <div class="session-badges">
+                        <span class="session-badge" id="academicYear">...</span>
+                        <span class="session-badge" id="semester">...</span>
+                        <span class="session-badge" id="period">...</span>
+                    </div>
+                </div>
+
+                <!-- TOP STATS (6 Cards for perfect grid) -->
+                <div class="stats-grid stagger-2">
                     <div class="stat-card glass-panel hover-card">
                         <div class="stat-label">Overall Attendance</div>
                         <div class="stat-value val-primary" id="overallPct">--%</div>
                         <div class="stat-meta" id="overallMeta">0/0 classes</div>
                     </div>
-                    
                     <div class="stat-card glass-panel hover-card">
                         <div class="stat-label">Classes Attended</div>
                         <div class="stat-value" id="attendedCount">0</div>
                         <div class="stat-meta">including official leaves</div>
                     </div>
-                    
                     <div class="stat-card glass-panel hover-card">
                         <div class="stat-label" id="canMissLabel">Can Miss</div>
                         <div class="stat-value val-success" id="canMiss">0</div>
                         <div class="stat-meta" id="canMissMeta">classes safely</div>
                     </div>
-                    
                     <div class="stat-card glass-panel hover-card">
                         <div class="stat-label">Subjects Traced</div>
                         <div class="stat-value" id="subjectCount">0</div>
                         <div class="stat-meta">active courses</div>
                     </div>
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">God Mode Streak</div>
+                        <div class="stat-value text-emerald-500" id="maxAttStreakTop">0 🏆</div>
+                        <div class="stat-meta">classes attended back-to-back</div>
+                    </div>
+                    <div class="stat-card glass-panel hover-card">
+                        <div class="stat-label">Favorite Escape</div>
+                        <div class="stat-value text-rose-500" id="worstDayTop">None 🏖️</div>
+                        <div class="stat-meta" id="worstDayMeta">perfect attendance pattern</div>
+                    </div>
                 </div>
 
-                <div class="controls-grid stagger-3" id="controlsSection">
-                    <div class="control-card glass-panel hover-card">
-                        <div class="control-header"><span>🎯</span><span>Target Attendance</span></div>
-                        <div class="control-input-group">
-                            <input type="number" id="targetInput" value="75" min="0" max="100">
-                            <span class="unit" style="font-weight: 800; font-size: 20px;">%</span>
-                        </div>
-                        <input type="range" id="targetSlider" value="75" min="0" max="100">
-                        <div class="requirement-box">
-                            <div id="targetRequirement" style="font-weight: 600;"></div>
+                <!-- ADVANCED ANALYTICS (Split Grid Layout) -->
+                <div class="split-grid stagger-3">
+                    
+                    <!-- Danger Zone Ranking -->
+                    <div class="adv-card glass-panel hover-card">
+                        <div class="adv-header"><span>🚨</span><span>Danger Zone Ranking</span></div>
+                        <p class="text-xs font-semibold text-slate-500 mb-4 uppercase tracking-wider">Subjects pulling you down</p>
+                        <div id="dangerZoneList">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
 
-                    <div class="control-card glass-panel hover-card">
-                        <div class="control-header"><span>🔮</span><span>Future Forecast</span></div>
-                        <div class="forecast-group">
-                            <label>If you attend the next</label>
-                            <input type="number" id="forecastDays" value="5" min="1" max="50">
-                            <label>classes:</label>
-                        </div>
-                        <div class="forecast-results">
-                            <div class="forecast-result forecast-attend">
-                                <div class="forecast-result-label">Attended All</div>
-                                <div class="forecast-result-value" id="forecastAttend">--%</div>
+                    <div class="side-by-side">
+                        <!-- Target Planner -->
+                        <div class="adv-card glass-panel hover-card">
+                            <div class="adv-header"><span>🎯</span><span>Target Planner</span></div>
+                            <div class="control-input-group">
+                                <input type="number" id="targetInput" class="target-inp" value="75" min="0" max="100">
+                                <span class="font-black text-xl text-slate-800 dark:text-slate-200">%</span>
                             </div>
-                            <div class="forecast-result forecast-miss">
-                                <div class="forecast-result-label">Missed All</div>
-                                <div class="forecast-result-value" id="forecastMiss">--%</div>
+                            <input type="range" id="targetSlider" value="75" min="0" max="100">
+                            <div class="requirement-box shadow-soft"><div id="targetRequirement"></div></div>
+                        </div>
+
+                        <!-- Future Forecast -->
+                        <div class="adv-card glass-panel hover-card">
+                            <div class="adv-header"><span>🔮</span><span>Future Forecast</span></div>
+                            <div class="forecast-header-row shadow-soft">
+                                <span>If you attend next</span>
+                                <input type="number" id="forecastDays" value="5" min="1" max="50">
+                                <span>classes:</span>
                             </div>
+                            <div class="forecast-results">
+                                <div class="forecast-result forecast-attend shadow-soft">
+                                    <div class="forecast-result-label">Attended All</div>
+                                    <div class="forecast-result-value" id="forecastAttend">--%</div>
+                                </div>
+                                <div class="forecast-result forecast-miss shadow-soft">
+                                    <div class="forecast-result-label">Missed All</div>
+                                    <div class="forecast-result-value" id="forecastMiss">--%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COMPACT MONTHLY HEATMAP -->
+                <div class="heatmap-container glass-panel hover-card stagger-3">
+                    <div class="heatmap-header">
+                        <div class="heatmap-title"><span>📅</span><span>Attendance Calendar</span></div>
+                        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                            <button class="pro-badge-btn">✨ Forecast Pro+</button>
+                            <div class="heatmap-controls shadow-soft">
+                                <button class="heatmap-btn" onclick="changeHeatmapMonth(-1)">❮</button>
+                                <div class="heatmap-month-label" id="heatmapMonthLabel">Month YYYY</div>
+                                <button class="heatmap-btn" onclick="changeHeatmapMonth(1)">❯</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="heatmap-wrapper">
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 8px;">
+                            <div class="heatmap-day-label">S</div><div class="heatmap-day-label">M</div>
+                            <div class="heatmap-day-label">T</div><div class="heatmap-day-label">W</div>
+                            <div class="heatmap-day-label">T</div><div class="heatmap-day-label">F</div>
+                            <div class="heatmap-day-label">S</div>
+                        </div>
+                        <div class="heatmap-grid" id="heatmapGrid">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
                 </div>
 
-                <div class="chart-container glass-panel hover-card stagger-3">
-                    <div class="chart-header">📈 Semester Trend</div>
-                    <canvas id="attendanceChart"></canvas>
+                <!-- POLISHED CHART & SECTION HEADERS -->
+                <div class="section-header stagger-4">
+                    <div class="section-title">Semester Trend</div>
+                    <div class="section-subtitle">Your attendance trajectory throughout the semester.</div>
                 </div>
-
-                <div class="subjects-section stagger-4" id="subjectsSection">
-                    <div class="section-header">
-                        <div class="section-title">Subjects Breakdown</div>
-                        <div class="section-subtitle">Use the + button to add official leaves (AG) ensuring accurate projections.</div>
-                    </div>
-                    <div class="subjects-grid" id="subjectsGrid"></div>
-                </div>
-
-                <!-- Session Info moved to the bottom perfectly in 1 line -->
-                <div class="session-info glass-panel hover-card stagger-4" id="sessionSection">
-                    <div class="session-grid">
-                        <div class="session-item"><span>Student Name</span> <span id="studentName">-</span></div>
-                        <div class="session-item"><span>Academic Year</span> <span id="academicYear">-</span></div>
-                        <div class="session-item"><span>Semester</span> <span id="semester">-</span></div>
-                        <div class="session-item"><span>Period</span> <span id="period">-</span></div>
+                
+                <div class="chart-container glass-panel hover-card stagger-4">
+                    <div class="chart-wrapper">
+                        <canvas id="attendanceChart"></canvas>
                     </div>
                 </div>
+
+                <div class="section-header stagger-4">
+                    <div class="section-title">Subjects Breakdown</div>
+                    <div class="section-subtitle">Use the + button to add official leaves (AG).</div>
+                </div>
+                
+                <div class="subjects-grid stagger-4" id="subjectsGrid" style="margin-bottom: 2rem;"></div>
+
             </div>
         </main>
     </div>
@@ -644,55 +741,67 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        // --- DATA & STATE ---
         let currentData = null;
         let attendanceChartInstance = null;
         let confettiFired = false;
+        
+        // Heatmap State
+        let heatmapDate = new Date();
+
+        // --- PWA / ADD TO HOME SCREEN LOGIC ---
         let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
+        const iosHint = document.getElementById('iosHint');
+        
+        // Check if device is iOS and not already in standalone mode
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 
-        // --- PWA INSTALL LOGIC ---
+        if (isIOS && !isStandalone) {
+            installBanner.style.display = 'flex';
+            installBtn.textContent = 'How?';
+            installBtn.style.pointerEvents = 'auto';
+            installBtn.addEventListener('click', () => {
+                iosHint.style.display = iosHint.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default mini-infobar
             deferredPrompt = e;
-            document.getElementById('installAppCard').style.display = 'flex';
+            installBanner.style.display = 'flex';
+            installBtn.style.pointerEvents = 'auto';
+            installBtn.textContent = 'Install';
         });
 
-        document.getElementById('installAppCard').addEventListener('click', async () => {
-            if (isIos()) {
-                // If iOS, show the hint since custom prompts aren't allowed
-                document.getElementById('iosInstallHint').style.display = 'block';
-                return;
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt(); // Show standard browser prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBanner.style.display = 'none';
             }
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('installAppCard').style.display = 'none';
-                }
-                deferredPrompt = null;
-            } else {
-                showToast("Please ensure the app is opened via a live link to install.");
-            }
+            deferredPrompt = null;
         });
 
-        const isIos = () => {
-          const userAgent = window.navigator.userAgent.toLowerCase();
-          return /iphone|ipad|ipod/.test( userAgent );
-        };
-        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+        window.addEventListener('appinstalled', () => {
+            installBanner.style.display = 'none';
+            deferredPrompt = null;
+        });
 
-        // --- CUSTOM TOAST ERRORS ---
+
+        // --- TOAST ---
         function showToast(message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.innerHTML = `<div><strong>Notice:</strong> ${message}</div><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+            toast.innerHTML = `<div><strong style="font-weight: 800;">Notice:</strong> ${message}</div><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 5000);
         }
 
-        // --- FORMATTING HELPERS ---
         function parseDateString(dateStr) {
             let parts = dateStr.trim().split('.');
             if(parts.length === 3) {
@@ -713,7 +822,7 @@
             }).join(' ');
         }
 
-        // --- ROBUST PDF EXTRACTION ---
+        // --- PDF EXTRACTION ---
         async function extractDataFromPDF(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -744,25 +853,14 @@
 
                         for (let i = 0; i < items.length; i++) {
                             const item = items[i].trim();
-                            const itemUpper = item.toUpperCase();
-                            
-                            // Capture exact Date from PDF explicitly
                             if (!reportDate && /\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/.test(item) && !item.includes('to') && i < 40) {
                                 reportDate = item.match(/\b(\d{2}[\.\/\-]\d{2}[\.\/\-]\d{2,4})\b/)[1].replace(/\./g, '/');
                             }
-
-                            // Semester
                             if (item.includes('Semester')) {
                                 let parts = item.split(',');
-                                if (parts.length >= 2) {
-                                    academicYear = parts[0].trim();
-                                    semester = parts[1].trim();
-                                } else {
-                                    semester = item;
-                                }
+                                if (parts.length >= 2) { academicYear = parts[0].trim(); semester = parts[1].trim(); } 
+                                else { semester = item; }
                             }
-
-                            // Period
                             if (item.startsWith('From ') && item.includes(' to ')) {
                                 let pStr = item.replace('From', '').trim();
                                 let pParts = pStr.split('to');
@@ -771,24 +869,18 @@
                             }
                         }
                         
-                        // Fallback logic if report date isn't cleanly found by labels
                         if (!reportDate) {
                             for (let i = 0; i < Math.min(items.length, 30); i++) {
                                 let match = items[i].match(/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/);
-                                if (match && !items[i].includes('to')) {
-                                    reportDate = match[0];
-                                    break;
-                                }
+                                if (match && !items[i].includes('to')) { reportDate = match[0]; break; }
                             }
                         }
 
-                        // Student Name
                         const attRepIdx = items.indexOf('Attendance Report');
                         if (attRepIdx !== -1) {
                             for (let i = attRepIdx + 1; i < attRepIdx + 10; i++) {
                                 if (items[i] && items[i] === items[i].toUpperCase() && items[i].length > 3 && !['PROGRAM NAME', 'ATTENDANCE REPORT DURATION:'].includes(items[i].toUpperCase()) && !items[i].startsWith('FROM')) {
-                                    studentName = items[i];
-                                    break;
+                                    studentName = items[i]; break;
                                 }
                             }
                         }
@@ -805,27 +897,18 @@
                                     if (/^\d+$/.test(prevItem) || dateRegex.test(prevItem) || ['P', 'A', 'AG', 'L', 'NU'].includes(prevItem)) break; 
                                     courseNameParts.unshift(prevItem);
                                 }
-                                let courseName = courseNameParts.join(' ').trim();
-                                if (!courseName) courseName = "Unknown Subject";
-
+                                let courseName = courseNameParts.join(' ').trim() || "Unknown Subject";
                                 let status = null;
                                 for (let j = 1; j <= 5; j++) {
                                     const nextItem = items[i + j];
-                                    if (['P', 'A', 'AG', 'L', 'NU'].includes(nextItem)) {
-                                        status = nextItem;
-                                        break;
-                                    }
+                                    if (['P', 'A', 'AG', 'L', 'NU'].includes(nextItem)) { status = nextItem; break; }
                                 }
 
                                 if (courseName && status && status !== 'NU') {
-                                    rows.push({ course: courseName, date: new Date(items[i]), status: status });
+                                    rows.push({ course: courseName, date: new Date(items[i]).getTime(), status: status }); 
                                     if (!subjectsMap[courseName]) subjectsMap[courseName] = { attended: 0, total: 0, officialLeaves: 0 };
-                                    if (['P', 'AG', 'L'].includes(status)) {
-                                        subjectsMap[courseName].attended++;
-                                        subjectsMap[courseName].total++;
-                                    } else if (status === 'A') {
-                                        subjectsMap[courseName].total++;
-                                    }
+                                    if (['P', 'AG', 'L'].includes(status)) { subjectsMap[courseName].attended++; subjectsMap[courseName].total++; } 
+                                    else if (status === 'A') { subjectsMap[courseName].total++; }
                                 }
                             }
                         }
@@ -838,44 +921,33 @@
 
                         rows.sort((a, b) => a.date - b.date);
                         
-                        // Extract specific absent logs
-                        const absentLogs = rows
-                            .filter(r => r.status === 'A')
-                            .sort((a, b) => b.date - a.date) // Most recent first
-                            .map(r => ({
-                                course: r.course,
-                                dateStr: r.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                            }));
+                        const absentLogs = rows.filter(r => r.status === 'A').sort((a, b) => b.date - a.date).map(r => ({
+                            course: r.course, dateStr: new Date(r.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                        }));
 
-                        let histAttended = 0;
-                        let histTotal = 0;
-                        const historyPoints = [];
-                        const historyLabels = [];
+                        let histAttended = 0; let histTotal = 0;
+                        const historyMap = new Map();
                         
-                        const interval = Math.max(1, Math.ceil(rows.length / 5));
-                        rows.forEach((row, index) => {
+                        rows.forEach((row) => {
                             if (['P', 'AG', 'L'].includes(row.status)) histAttended++;
                             if (['P', 'AG', 'A', 'L'].includes(row.status)) histTotal++;
-                            if ((index + 1) % interval === 0) {
-                                historyPoints.push(Math.round((histAttended / histTotal) * 100));
-                                historyLabels.push(row.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
-                            }
+                            
+                            const monthYearKey = new Date(row.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+                            const monthOnlyLabel = new Date(row.date).toLocaleDateString('en-GB', { month: 'short' });
+                            
+                            // Sets/Updates the value to the final percentage reached at the end of that specific month
+                            historyMap.set(monthYearKey, { label: monthOnlyLabel, val: Math.round((histAttended / histTotal) * 100) });
                         });
 
-                        while (historyPoints.length < 5 && historyPoints.length > 0) {
-                            historyPoints.unshift(historyPoints[0]);
-                            historyLabels.unshift('Start');
-                        }
-                        if (historyPoints.length > 5) {
-                            historyPoints.splice(0, historyPoints.length - 5);
-                            historyLabels.splice(0, historyLabels.length - 5);
-                        }
+                        const historyLabels = Array.from(historyMap.values()).map(item => item.label);
+                        const historyPoints = Array.from(historyMap.values()).map(item => item.val);
+                        
+                        if (historyLabels.length === 0) { historyLabels.push('Start'); historyPoints.push(0); }
 
                         resolve({
                             studentName, academicYear, semester, period, 
                             history: historyPoints, historyLabels, subjects,
-                            absentLogs: absentLogs,
-                            lastUpdated: reportDate
+                            absentLogs: absentLogs, rawLogs: rows, lastUpdated: reportDate
                         });
 
                     } catch (err) { reject(err); }
@@ -886,34 +958,58 @@
 
         async function handleFileUpload(file) {
             if (!file) return;
-
-            // 1. FILE SAFETY CHECK
-            if (file.type !== "application/pdf") {
-                showToast("Oops! Please upload a valid PDF document.");
-                document.getElementById('fileInput').value = '';
-                return;
-            }
-
+            if (file.type !== "application/pdf") { showToast("Oops! Please upload a valid PDF."); return; }
             document.getElementById('uploadContent').style.display = 'none';
             document.getElementById('loadingOverlay').style.display = 'flex';
 
             try {
                 currentData = await extractDataFromPDF(file);
                 saveDataToLocal(); 
-                
-                // 2. GOOGLE ANALYTICS EVENT (PDF UPLOADED)
-                if (typeof gtag === 'function') {
-                    gtag('event', 'pdf_uploaded', { 'event_category': 'engagement' });
-                }
-
+                if (typeof gtag === 'function') gtag('event', 'pdf_uploaded', { 'event_category': 'engagement' });
                 showDashboard();
             } catch (error) {
-                showToast(error.message || "Failed to process PDF file.");
+                showToast(error.message || "Failed to process PDF.");
                 resetToUpload();
             }
         }
 
-        // --- CORE MATH & LOGIC ---
+        // --- DEMO DATA GENERATOR ---
+        function loadDemoData() {
+            document.getElementById('uploadContent').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            setTimeout(() => {
+                const now = new Date();
+                const rawLogs = [];
+                const subjects = [
+                    {name: "Financial Accounting", total: 40, attended: 35, ol:0},
+                    {name: "Business Law", total: 38, attended: 22, ol:0},
+                    {name: "Economics", total: 42, attended: 38, ol:0},
+                    {name: "IT in Business", total: 35, attended: 25, ol:0}
+                ];
+                
+                for(let i=120; i>=0; i--) {
+                    let d = new Date(now.getTime() - i*24*60*60*1000);
+                    if(d.getDay() === 0) continue; // skip sunday
+                    let lecs = 3 + Math.floor(Math.random()*3);
+                    for(let j=0; j<lecs; j++) {
+                        let sub = subjects[Math.floor(Math.random()*subjects.length)];
+                        let isFriday = d.getDay() === 5;
+                        let status = (Math.random() < (isFriday ? 0.6 : 0.15)) ? 'A' : 'P';
+                        rawLogs.push({ course: sub.name, date: d.getTime(), status: status });
+                    }
+                }
+                
+                currentData = {
+                    studentName: "Student", academicYear: "2025-2026", semester: "Semester IV", period: "Jan 01 2026 to Mar 30 2026",
+                    subjects: subjects, rawLogs: rawLogs, absentLogs: [], history: [68,72,75,78], historyLabels: ['Jan','Feb','Mar','Apr'], lastUpdated: "Demo Mode"
+                };
+                
+                showDashboard();
+            }, 800);
+        }
+
+        // --- CALCULATIONS ---
         function calculateStats() {
             if (!currentData) return;
             let totalAttended = 0, totalClasses = 0;
@@ -932,7 +1028,6 @@
             if (percentage >= 65) return 'status-warning';
             return 'status-danger';
         }
-        
         function getProgressBarClass(percentage) {
             if (percentage >= 75) return 'bg-good';
             if (percentage >= 65) return 'bg-warn';
@@ -942,15 +1037,124 @@
         window.updateLeaves = function(subjectIndex, change) {
             if (!currentData) return;
             const subject = currentData.subjects[subjectIndex];
-            
             let newLeaves = (subject.officialLeaves || 0) + change;
             if (newLeaves < 0) newLeaves = 0;
             if ((subject.attended + newLeaves) > subject.total) newLeaves = subject.total - subject.attended;
-            
             subject.officialLeaves = newLeaves;
-            saveDataToLocal(); 
-            updateDashboard();
+            saveDataToLocal(); updateDashboard();
         };
+
+        window.changeHeatmapMonth = function(offset) {
+            heatmapDate.setMonth(heatmapDate.getMonth() + offset);
+            renderMonthlyHeatmap();
+        };
+
+        // --- ADVANCED ANALYTICS (Streaks, Weekdays, Heatmap, Danger Zone) ---
+        function runAdvancedAnalytics(targetPct) {
+            if(!currentData.rawLogs || currentData.rawLogs.length === 0) return;
+            
+            const logs = currentData.rawLogs.map(r => ({...r, dObj: new Date(r.date)}));
+            
+            // 1. STREAKS
+            let cAtt=0, mAtt=0, cBunk=0, mBunk=0;
+            logs.forEach(l => {
+                if(['P','AG','L'].includes(l.status)) { cAtt++; cBunk=0; if(cAtt>mAtt) mAtt=cAtt; }
+                else if(l.status === 'A') { cBunk++; cAtt=0; if(cBunk>mBunk) mBunk=cBunk; }
+            });
+            document.getElementById('maxAttStreakTop').innerHTML = `${mAtt} 🏆`;
+
+            // 2. MONDAY SICKNESS (Worst Day)
+            let wAbs = [0,0,0,0,0,0,0], wTot = [0,0,0,0,0,0,0];
+            logs.forEach(l => {
+                let d = l.dObj.getDay();
+                wTot[d]++;
+                if(l.status === 'A') wAbs[d]++;
+            });
+            const dayNames = ['Sundays','Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays'];
+            let maxRate = -1, worstDay = -1;
+            for(let i=1; i<=6; i++) {
+                if(wTot[i] > 2) {
+                    let r = wAbs[i]/wTot[i];
+                    if(r > maxRate) { maxRate = r; worstDay = i; }
+                }
+            }
+            if(worstDay !== -1 && maxRate > 0) {
+                document.getElementById('worstDayTop').innerHTML = `${dayNames[worstDay]} 🏖️`;
+                document.getElementById('worstDayMeta').textContent = `you skip ${Math.round(maxRate*100)}% of these`;
+            } else {
+                document.getElementById('worstDayTop').innerHTML = `None 😇`;
+                document.getElementById('worstDayMeta').textContent = `perfect attendance pattern`;
+            }
+
+            // 3. DANGER ZONE
+            const dangerHtml = currentData.subjects.map(s => {
+                let eff = Math.min(s.total, s.attended + (s.officialLeaves||0));
+                let pct = s.total ? (eff/s.total)*100 : 100;
+                return { name: s.name, pct: pct, delta: targetPct - pct };
+            }).filter(s => s.delta > 0).sort((a,b) => b.delta - a.delta).slice(0,3).map(s => `
+                <div class="danger-item">
+                    <span class="danger-name">${s.name}</span>
+                    <span class="danger-sub">${Math.round(s.pct)}%</span>
+                </div>
+            `).join('') || '<div class="text-sm text-emerald-600 font-bold mt-2">You are safe in all subjects! 🎉</div>';
+            document.getElementById('dangerZoneList').innerHTML = dangerHtml;
+
+            // 4. MONTHLY HEATMAP
+            if(logs.length > 0) {
+                heatmapDate = new Date(logs[logs.length-1].date);
+            }
+            renderMonthlyHeatmap();
+        }
+
+        function renderMonthlyHeatmap() {
+            if(!currentData || !currentData.rawLogs) return;
+            
+            const logs = currentData.rawLogs.map(r => ({...r, dObj: new Date(r.date)}));
+            const year = heatmapDate.getFullYear();
+            const month = heatmapDate.getMonth();
+            
+            document.getElementById('heatmapMonthLabel').textContent = heatmapDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+
+            const daily = {};
+            logs.forEach(l => {
+                if (l.dObj.getFullYear() === year && l.dObj.getMonth() === month) {
+                    let ds = l.dObj.getDate();
+                    if(!daily[ds]) daily[ds] = {a:0, t:0};
+                    daily[ds].t++;
+                    if(['P','AG','L'].includes(l.status)) daily[ds].a++;
+                }
+            });
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let heatHtml = '';
+            for(let i=0; i<firstDay; i++) {
+                heatHtml += `<div class="heatmap-cell empty"></div>`;
+            }
+
+            for(let day=1; day<=daysInMonth; day++) {
+                let stat = daily[day];
+                let c = 'cell-0';
+                let tooltip = `${day} ${heatmapDate.toLocaleString('default', { month: 'short' })}: No classes`;
+                
+                if(stat) {
+                    let pct = stat.a / stat.t;
+                    if(pct === 0) c = 'cell-1';
+                    else if(pct < 1) c = 'cell-2';
+                    else c = 'cell-3';
+                    tooltip = `${day} ${heatmapDate.toLocaleString('default', { month: 'short' })}: ${stat.a}/${stat.t} attended`;
+                } else {
+                    let cellDate = new Date(year, month, day);
+                    if (cellDate > new Date()) {
+                        c = 'cell-future';
+                        tooltip = `${day} ${heatmapDate.toLocaleString('default', { month: 'short' })}: Future`;
+                    }
+                }
+                heatHtml += `<div class="heatmap-cell ${c}"><div class="heatmap-tooltip">${tooltip}</div></div>`;
+            }
+            document.getElementById('heatmapGrid').innerHTML = heatHtml;
+        }
 
         // --- DASHBOARD UI UPDATER ---
         function updateDashboard() {
@@ -963,52 +1167,48 @@
             document.getElementById('overallMeta').textContent = `${stats.totalAttended}/${stats.totalClasses} classes`;
             document.getElementById('attendedCount').textContent = stats.totalAttended;
             document.getElementById('subjectCount').textContent = currentData.subjects.length;
+            
+            // Hero details
+            document.getElementById('studentNameHero').textContent = toTitleCase(currentData.studentName).split(' ')[0] || "Student";
+            document.getElementById('academicYear').textContent = currentData.academicYear;
+            document.getElementById('semester').textContent = currentData.semester;
+            document.getElementById('period').textContent = currentData.period;
 
-            if(currentData.lastUpdated) {
-                document.getElementById('lastUpdatedStr').textContent = `Data as of: ${currentData.lastUpdated}`;
-            }
+            if(currentData.lastUpdated) document.getElementById('lastUpdatedStr').textContent = `Data as of: ${currentData.lastUpdated}`;
 
-            // --- Real "Can Miss / Need to Reach" Logic ---
+            // Can Miss / Need
             let canMissVal = document.getElementById('canMiss');
             let canMissLabel = document.getElementById('canMissLabel');
             let canMissMeta = document.getElementById('canMissMeta');
             let targetRequirementText = "";
             
             if (stats.totalAttended >= p * stats.totalClasses) {
-                // Safely above target
                 let canMiss = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
-                
                 canMissVal.textContent = canMiss;
                 canMissVal.className = 'stat-value val-success';
                 canMissLabel.textContent = 'Can Miss';
                 canMissMeta.textContent = 'classes safely';
-                
-                targetRequirementText = `Can miss <strong style="color: var(--success); font-size: 16px;">${canMiss}</strong> classes to be above ${target}%`;
+                targetRequirementText = `Can miss <strong style="color: var(--success);">${canMiss}</strong> classes safely.`;
             } else {
-                // Below target
                 let needed = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
-                
                 canMissVal.textContent = needed;
-                canMissVal.className = 'stat-value val-danger'; // Turns text red
+                canMissVal.className = 'stat-value val-danger';
                 canMissLabel.textContent = 'Need to Attend';
-                canMissMeta.textContent = `to reach ${target}%`;
-                
-                targetRequirementText = `Need <strong style="color: var(--danger); font-size: 16px;">${needed}</strong> classes to reach ${target}%`;
+                canMissMeta.textContent = `to reach target`;
+                targetRequirementText = `Need <strong style="color: var(--danger);">${needed}</strong> classes to recover.`;
             }
             
             document.getElementById('targetRequirement').innerHTML = targetRequirementText;
 
+            // Forecast
             const forecastDays = parseInt(document.getElementById('forecastDays').value) || 0;
             const attendAll = Math.round(((stats.totalAttended + forecastDays) / (stats.totalClasses + forecastDays)) * 100) || 0;
             const missAll = Math.round((stats.totalAttended / (stats.totalClasses + forecastDays)) * 100) || 0;
-            
             document.getElementById('forecastAttend').textContent = attendAll + '%';
             document.getElementById('forecastMiss').textContent = missAll + '%';
 
-            document.getElementById('studentName').textContent = toTitleCase(currentData.studentName);
-            document.getElementById('academicYear').textContent = currentData.academicYear;
-            document.getElementById('semester').textContent = currentData.semester;
-            document.getElementById('period').textContent = currentData.period;
+            // Run Advanced
+            runAdvancedAnalytics(target);
 
             const grid = document.getElementById('subjectsGrid');
             grid.innerHTML = currentData.subjects.map((s, index) => {
@@ -1023,9 +1223,7 @@
                             <div class="subject-name">${s.name}</div>
                             <span class="status-badge ${status}">${pct}%</span>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill ${barColor}" style="width: ${pct}%;"></div>
-                        </div>
+                        <div class="progress-bar"><div class="progress-fill ${barColor}" style="width: ${pct}%;"></div></div>
                         <div class="subject-meta">
                             <span>${effectiveAttended}/${s.total} Attended</span>
                             <div class="leaves-control">
@@ -1054,125 +1252,105 @@
             const textColor = isDark ? '#94A3B8' : '#475569';
 
             const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(29, 155, 240, 0.4)');
-            gradient.addColorStop(1, 'rgba(29, 155, 240, 0.0)');
+            gradient.addColorStop(0, 'rgba(124, 58, 237, 0.4)');
+            gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
+
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.font.weight = "600";
 
             attendanceChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Overall %',
-                        data: chartData,
-                        borderColor: '#1D9BF0', 
-                        backgroundColor: gradient, 
-                        borderWidth: 4, 
-                        tension: 0.4, 
-                        fill: true,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#1D9BF0',
-                        pointBorderWidth: 3,
-                        pointRadius: 5, 
-                        pointHoverRadius: 8 
+                        label: 'Overall %', data: chartData, borderColor: '#7c3aed', backgroundColor: gradient, 
+                        borderWidth: 4, tension: 0.4, fill: true, pointBackgroundColor: '#fff', pointBorderColor: '#7c3aed',
+                        pointBorderWidth: 3, pointRadius: 6, pointHoverRadius: 9 
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    animation: { duration: 1000, easing: 'easeOutQuart' },
+                    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                    layout: { padding: { top: 10, bottom: 10 } },
                     plugins: { 
                         legend: { display: false },
-                        tooltip: {
-                            backgroundColor: isDark ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)',
-                            titleColor: isDark ? '#F8FAFC' : '#0F172A', bodyColor: isDark ? '#F8FAFC' : '#0F172A',
-                            borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)', borderWidth: 1, padding: 12, displayColors: false,
-                            bodyFont: { family: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif", size: 14, weight: 'bold' },
-                            callbacks: { label: (context) => context.parsed.y + '%' }
-                        }
+                        tooltip: { backgroundColor: isDark ? 'rgba(15,23,42,0.95)' : 'rgba(255,255,255,0.95)', titleColor: isDark ? '#F8FAFC' : '#0F172A', bodyColor: isDark ? '#F8FAFC' : '#0F172A', borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)', borderWidth: 1, padding: 14, titleFont: { size: 13 }, bodyFont: { size: 16, weight: '900' }, displayColors: false, callbacks: { label: (context) => context.parsed.y + '%' } }
                     }, 
                     scales: {
-                        y: { 
-                            beginAtZero: false, 
-                            min: Math.min(...chartData) - 5 < 50 ? Math.floor(Math.min(...chartData) / 10) * 10 : 50, max: 100,
-                            grid: { color: gridColor, drawBorder: false, borderDash: [5, 5] },
-                            ticks: { color: textColor, padding: 10, font: { family: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif", size: 12 }, callback: (val) => val + '%' }
-                        },
-                        x: { 
-                            grid: { display: false, drawBorder: false },
-                            ticks: { color: textColor, padding: 10, font: { family: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif", size: 12 } }
-                        }
+                        y: { min: Math.min(...chartData) - 5 < 50 ? Math.floor(Math.min(...chartData) / 10) * 10 : 50, max: 100, grid: { color: gridColor, drawBorder: false, borderDash: [5, 5] }, ticks: { color: textColor, padding: 12, callback: (val) => val + '%' } },
+                        x: { grid: { display: false, drawBorder: false }, ticks: { color: textColor, padding: 12 } }
                     }
                 }
             });
         }
 
-        // --- LOCAL STORAGE ---
         function saveDataToLocal() { if (currentData) localStorage.setItem('nmat_data', JSON.stringify(currentData)); }
         function loadDataFromLocal() {
             const saved = localStorage.getItem('nmat_data');
             const savedTarget = localStorage.getItem('nmat_target');
-            if (savedTarget) {
-                document.getElementById('targetInput').value = savedTarget;
-                document.getElementById('targetSlider').value = savedTarget;
-            }
-            if (saved) {
-                currentData = JSON.parse(saved);
-                showDashboard();
-                return true;
-            }
+            if (savedTarget) { document.getElementById('targetInput').value = savedTarget; document.getElementById('targetSlider').value = savedTarget; }
+            if (saved) { currentData = JSON.parse(saved); showDashboard(); return true; }
             return false;
         }
 
-        // --- UI NAVIGATION ---
         function showDashboard() {
             document.getElementById('uploadView').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'block';
-            document.getElementById('clearDataBtn').style.display = 'block';
-            document.getElementById('absentLogBtn').style.display = 'block';
+            
+            // Show header buttons
+            document.getElementById('absentLogBtn').style.display = 'flex';
             document.getElementById('exportBtn').style.display = 'flex';
             
             updateDashboard();
 
-            // 3. GAMIFICATION: Trigger Confetti if hitting Target
-            if (!confettiFired && currentData) {
+            if (!confettiFired && currentData && currentData.lastUpdated !== "Demo Mode") {
                 const stats = calculateStats();
                 const target = parseInt(document.getElementById('targetInput').value) || 75;
                 if (stats.overall >= target) {
-                    setTimeout(() => {
-                        if (typeof confetti === 'function') {
-                            confetti({
-                                particleCount: 150,
-                                spread: 80,
-                                origin: { y: 0.6 },
-                                colors: ['#1D9BF0', '#10B981', '#F59E0B']
-                            });
-                        }
-                    }, 500);
+                    setTimeout(() => { if (typeof confetti === 'function') confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#7c3aed', '#10B981', '#F59E0B'] }); }, 500);
                     confettiFired = true; 
                 }
             }
         }
 
         function resetToUpload() {
-            currentData = null;
-            confettiFired = false;
-            localStorage.removeItem('nmat_data');
+            currentData = null; confettiFired = false; localStorage.removeItem('nmat_data');
             document.getElementById('uploadView').style.display = 'flex';
             document.getElementById('uploadContent').style.display = 'block';
             document.getElementById('loadingOverlay').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'none';
-            document.getElementById('clearDataBtn').style.display = 'none';
             document.getElementById('absentLogBtn').style.display = 'none';
             document.getElementById('exportBtn').style.display = 'none';
             document.getElementById('fileInput').value = '';
-            document.getElementById('installAppCard').style.display = 'none';
         }
+
+        // --- WHATSAPP CONTEXTUAL SHARE ---
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            if (!currentData) return;
+            if (typeof gtag === 'function') gtag('event', 'shared_whatsapp', { 'event_category': 'engagement' });
+
+            const stats = calculateStats();
+            const studentName = currentData.studentName ? toTitleCase(currentData.studentName).split(' ')[0] : "Student";
+            const streakText = document.getElementById('maxAttStreakTop').textContent.replace(' 🏆', '');
+            
+            const textToShare = `📚 *My SVKM Attendance Check*
+👤 *${studentName}* | ${currentData.semester}
+
+📈 *Overall:* ${stats.overall}%
+✅ *Classes Attended:* ${stats.totalAttended}/${stats.totalClasses}
+
+🔥 *God Mode Streak:* ${streakText} classes
+
+Calculate exactly how many lectures YOU can safely skip 🤫👇
+🔗 https://nm-attendify.vercel.app`;
+
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`, '_blank');
+        });
 
         // --- ABSENT LOG MODAL LOGIC ---
         document.getElementById('absentLogBtn').addEventListener('click', () => {
             const list = document.getElementById('absentLogList');
             if (!currentData || !currentData.absentLogs || currentData.absentLogs.length === 0) {
-                list.innerHTML = '<div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-weight: 600;">You haven\'t missed any lectures! 🎉</div>';
+                list.innerHTML = '<div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-weight: 800;">You haven\'t missed any lectures! 🎉</div>';
                 document.getElementById('shareAbsentLogBtn').style.display = 'none';
             } else {
                 list.innerHTML = currentData.absentLogs.map(log => `
@@ -1186,54 +1364,7 @@
             document.getElementById('absentLogPopup').classList.add('show');
         });
 
-        document.getElementById('shareAbsentLogBtn').addEventListener('click', () => {
-            if (!currentData || !currentData.absentLogs) return;
-            
-            let logText = currentData.absentLogs.map(log => `❌ ${log.dateStr} - ${log.course}`).join('\n');
-            let textToShare = `📚 *Absent Log* - ${toTitleCase(currentData.studentName)}\n\n${logText}\n\nCheck your analytics at:\nhttps://nm-attendify.vercel.app`;
-            
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`, '_blank');
-        });
-
-        // --- DIRECT WHATSAPP TEXT SHARE (Main Dashboard) ---
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            if (!currentData) return;
-
-            if (typeof gtag === 'function') {
-                gtag('event', 'shared_whatsapp', { 'event_category': 'engagement' });
-            }
-
-            const stats = calculateStats();
-            const target = parseInt(document.getElementById('targetInput').value) || 75;
-            const p = target / 100;
-            
-            let targetActionText = "";
-            if (stats.totalAttended >= p * stats.totalClasses) {
-                let cm = Math.floor((stats.totalAttended - p * stats.totalClasses) / p);
-                targetActionText = `can miss ${cm} classes to be above ${target}%`;
-            } else {
-                let cn = Math.ceil((p * stats.totalClasses - stats.totalAttended) / (1 - p));
-                targetActionText = `need ${cn} classes to reach ${target}%`;
-            }
-            
-            const studentName = currentData.studentName ? toTitleCase(currentData.studentName) : "Student";
-            const semester = currentData.semester || "";
-            const period = currentData.period ? currentData.period.replace(/from/i, '').trim() : "";
-
-            // New structured WhatsApp message strictly formatted as requested
-            const textToShare = `*${studentName}* - ${semester}\nAttendance from ${period}\n\n📈 *Overall:* ${stats.overall}%\n✅ *Attended:* ${stats.totalAttended} / ${stats.totalClasses} classes\n\n*${targetActionText}*\n\nCheck your attendance securely at:\nhttps://nm-attendify.vercel.app`;
-            
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
-            window.open(whatsappUrl, '_blank');
-        });
-
         // --- EVENT LISTENERS ---
-        document.getElementById('clearDataBtn').addEventListener('click', () => {
-            if(confirm("Are you sure you want to clear your data? You will need to re-upload your PDF.")) {
-                resetToUpload();
-            }
-        });
-
         const themeCheckbox = document.getElementById('themeToggleCheckbox');
         if(localStorage.getItem('nmat_theme') === 'dark') { document.body.classList.add('dark-theme'); themeCheckbox.checked = true; }
         themeCheckbox.addEventListener('change', () => {
@@ -1245,45 +1376,19 @@
         document.getElementById('uploadZone').addEventListener('click', () => document.getElementById('fileInput').click());
         document.getElementById('fileInput').addEventListener('change', (e) => { if (e.target.files.length > 0) handleFileUpload(e.target.files[0]); });
         
-        document.getElementById('targetInput').addEventListener('input', (e) => { 
-            document.getElementById('targetSlider').value = e.target.value; 
-            localStorage.setItem('nmat_target', e.target.value); 
-            updateDashboard(); 
-        });
-        document.getElementById('targetSlider').addEventListener('input', (e) => { 
-            document.getElementById('targetInput').value = e.target.value; 
-            localStorage.setItem('nmat_target', e.target.value);
-            updateDashboard(); 
-        });
+        document.getElementById('targetInput').addEventListener('input', (e) => { document.getElementById('targetSlider').value = e.target.value; localStorage.setItem('nmat_target', e.target.value); updateDashboard(); });
+        document.getElementById('targetSlider').addEventListener('input', (e) => { document.getElementById('targetInput').value = e.target.value; localStorage.setItem('nmat_target', e.target.value); updateDashboard(); });
         document.getElementById('forecastDays').addEventListener('input', updateDashboard);
 
         const zone = document.getElementById('uploadZone');
         zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.style.borderColor = 'var(--primary)'; });
         zone.addEventListener('dragleave', () => { zone.style.borderColor = 'var(--glass-border-light)'; });
-        zone.addEventListener('drop', (e) => { 
-            e.preventDefault(); 
-            zone.style.borderColor = 'var(--glass-border-light)'; 
-            if (e.dataTransfer.files.length > 0) handleFileUpload(e.dataTransfer.files[0]); 
-        });
+        zone.addEventListener('drop', (e) => { e.preventDefault(); zone.style.borderColor = 'var(--glass-border-light)'; if (e.dataTransfer.files.length > 0) handleFileUpload(e.dataTransfer.files[0]); });
 
         window.onload = () => { 
             loadDataFromLocal(); 
-            if (!localStorage.getItem('nmat_popup_shown')) {
-                setTimeout(() => {
-                    document.getElementById('sharePopup').classList.add('show');
-                }, 1500); 
-            }
-            
-            // Show iOS PWA hint if applicable and on upload screen
-            if (isIos() && !isInStandaloneMode() && !currentData) {
-                document.getElementById('installAppCard').style.display = 'flex';
-            }
+            if (!localStorage.getItem('nmat_popup_shown')) setTimeout(() => { document.getElementById('sharePopup').classList.add('show'); }, 1500); 
         };
-   if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
-}
     </script>
 </body>
 </html>
